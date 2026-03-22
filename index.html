@@ -1,0 +1,2283 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IraqiMed Blueprint — Dr. Ahmed H. Fadl</title>
+<meta name="description" content="Iraqi 6th Year Medical Exam Planner — Dr. Ahmed H. Fadl | @AH7Hf"/>
+<meta name="theme-color" content="#0b0e1a"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0b0e1a;--bg2:#111527;--bg3:#181d35;
+  --card:#1a2040;--card2:#1e2650;
+  --border:rgba(100,120,255,0.15);
+  --accent:#5b8cff;--accent2:#7c3aed;--accent3:#06d6a0;--accent4:#f59e0b;--accent5:#ef4444;
+  --text:#e8ecff;--text2:#8899cc;--text3:#5566aa;
+  --high:#ef4444;--med:#f59e0b;--low:#06d6a0;
+  --shadow:0 8px 32px rgba(0,0,0,0.4);
+  --radius:16px;--radius-sm:10px;
+  --transition:0.25s cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="light"]{
+  --bg:#f0f2ff;--bg2:#e8ebff;--bg3:#dde1ff;
+  --card:#ffffff;--card2:#f5f7ff;
+  --border:rgba(80,100,200,0.12);
+  --accent:#4370ff;--accent2:#6d28d9;--accent3:#059669;--accent4:#d97706;--accent5:#dc2626;
+  --text:#1a1f3c;--text2:#4455aa;--text3:#8899cc;
+  --high:#dc2626;--med:#d97706;--low:#059669;
+  --shadow:0 8px 32px rgba(80,100,200,0.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--transition),color var(--transition);}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--accent2);border-radius:3px;}
+
+/* ── HEADER ─────────────────────────────────────────────── */
+.app-header{
+  position:sticky;top:0;z-index:100;
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  backdrop-filter:blur(20px);padding:0 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;transition:background var(--transition);
+  flex-wrap:wrap;gap:8px;
+}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.header-actions{display:flex;align-items:center;gap:10px;}
+.nav-tabs{display:flex;gap:4px;background:var(--card);border-radius:var(--radius-sm);padding:4px;}
+.nav-tab{background:none;border:none;cursor:pointer;padding:6px 14px;border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;
+  color:var(--text2);transition:all var(--transition);white-space:nowrap;touch-action:manipulation;}
+.nav-tab.active{background:var(--accent);color:#fff;}
+.nav-tab:hover:not(.active){background:var(--card2);color:var(--text);}
+.theme-btn{background:var(--card);border:1px solid var(--border);color:var(--text2);cursor:pointer;
+  border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  font-size:1rem;transition:all var(--transition);touch-action:manipulation;}
+.theme-btn:hover{background:var(--card2);color:var(--text);}
+.user-pill{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:5px 12px 5px 7px;cursor:pointer;transition:all var(--transition);touch-action:manipulation;}
+.user-pill:hover{border-color:var(--accent);}
+.user-avatar{width:24px;height:24px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.68rem;font-weight:700;color:#fff;flex-shrink:0;text-transform:uppercase;}
+.user-name{font-size:0.76rem;font-weight:600;color:var(--text);max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.user-menu{position:fixed;top:68px;right:14px;z-index:500;background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius-sm);box-shadow:var(--shadow);min-width:190px;overflow:hidden;display:none;animation:slideIn 0.2s ease;}
+.user-menu.show{display:block;}
+.user-menu-header{padding:12px 14px;border-bottom:1px solid var(--border);}
+.user-menu-name{font-weight:700;font-size:0.86rem;color:var(--text);}
+.user-menu-email{font-size:0.73rem;color:var(--text2);margin-top:2px;}
+.user-menu-item{display:flex;align-items:center;gap:9px;padding:9px 14px;font-size:0.82rem;
+  color:var(--text2);cursor:pointer;transition:background var(--transition);touch-action:manipulation;}
+.user-menu-item:hover{background:var(--bg3);color:var(--text);}
+.user-menu-item.danger{color:var(--high);}
+.user-menu-item.danger:hover{background:rgba(239,68,68,0.1);}
+
+/* ── SUBJECT SELECTOR ────────────────────────────────────── */
+.subject-selector{
+  position:fixed;inset:0;z-index:8000;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;
+  animation:fadeIn 0.4s ease;
+}
+.subject-selector.hidden{display:none;}
+.subject-sel-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:8px;text-align:center;}
+.subject-sel-sub{color:var(--text2);font-size:0.9rem;margin-bottom:36px;text-align:center;}
+.subject-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:900px;width:100%;}
+.subject-card{
+  background:var(--card);border:2px solid var(--border);border-radius:var(--radius);
+  padding:28px 20px;text-align:center;cursor:pointer;
+  transition:all var(--transition);touch-action:manipulation;
+  position:relative;overflow:hidden;
+}
+.subject-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity var(--transition);background:var(--sc-grad);}
+.subject-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.3);border-color:var(--sc-color);}
+.subject-card:hover::before{opacity:0.06;}
+.subject-card-icon{font-size:2.8rem;margin-bottom:12px;}
+.subject-card-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:6px;}
+.subject-card-desc{font-size:0.78rem;color:var(--text2);}
+.subject-card-badge{
+  margin-top:12px;display:inline-block;
+  font-size:0.72rem;font-weight:700;padding:3px 12px;border-radius:20px;
+  background:var(--sc-color);color:#fff;opacity:0.9;
+}
+.subject-card-progress{margin-top:14px;}
+.subject-prog-bar{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.subject-prog-fill{height:100%;border-radius:3px;transition:width 0.6s ease;background:var(--sc-color);}
+.subject-prog-label{font-size:0.7rem;color:var(--text3);margin-top:5px;}
+
+/* ── ACTIVE SUBJECT BAR ──────────────────────────────────── */
+.subject-bar{
+  background:var(--card);border-bottom:1px solid var(--border);
+  padding:8px 20px;display:none;align-items:center;gap:12px;
+}
+.subject-bar.show{display:flex;}
+.subject-bar-icon{font-size:1.3rem;}
+.subject-bar-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--text);}
+.subject-bar-change{margin-left:auto;background:none;border:1px solid var(--border);border-radius:20px;
+  padding:4px 12px;font-size:0.75rem;color:var(--text2);cursor:pointer;transition:all var(--transition);touch-action:manipulation;}
+.subject-bar-change:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ── PANELS ──────────────────────────────────────────────── */
+main{max-width:1400px;margin:0 auto;padding:24px 16px;}
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* ── CARDS ───────────────────────────────────────────────── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);transition:background var(--transition);}
+.card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.card-title .icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;}
+
+/* ── GRID ────────────────────────────────────────────────── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+@media(max-width:900px){.grid-2,.grid-4{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.grid-2,.grid-4{grid-template-columns:1fr;}}
+
+/* ── STAT CARDS ──────────────────────────────────────────── */
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden;transition:transform var(--transition),box-shadow var(--transition),background var(--transition);}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,0.3);}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-grad,linear-gradient(90deg,var(--accent),var(--accent2)));border-radius:var(--radius) var(--radius) 0 0;}
+.stat-val{font-family:'Syne',sans-serif;font-weight:800;font-size:2.2rem;color:var(--text);line-height:1;margin-bottom:4px;}
+.stat-label{font-size:0.78rem;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:0.08em;}
+.stat-sub{font-size:0.75rem;color:var(--text3);margin-top:6px;}
+.stat-icon{position:absolute;right:14px;top:14px;font-size:1.8rem;opacity:0.12;}
+
+/* ── OVERALL PROGRESS ────────────────────────────────────── */
+.overall-progress-wrap{background:linear-gradient(135deg,var(--accent2) 0%,var(--accent) 100%);border-radius:var(--radius);padding:24px;color:#fff;position:relative;overflow:hidden;}
+.overall-progress-wrap::after{content:'';position:absolute;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,0.05);right:-70px;top:-70px;}
+.overall-pct{font-family:'Syne',sans-serif;font-weight:800;font-size:3rem;line-height:1;}
+.overall-label{opacity:0.85;font-size:0.88rem;margin-top:4px;}
+.overall-bar-track{height:9px;background:rgba(255,255,255,0.2);border-radius:5px;margin:16px 0 8px;overflow:hidden;}
+.overall-bar-fill{height:100%;background:#fff;border-radius:5px;transition:width 0.8s cubic-bezier(0.4,0,0.2,1);}
+.overall-meta{display:flex;gap:16px;font-size:0.8rem;opacity:0.85;flex-wrap:wrap;}
+
+/* ── COUNTDOWN ───────────────────────────────────────────── */
+.countdown-wrap{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+.countdown-box{background:var(--bg3);border-radius:var(--radius-sm);padding:12px 16px;text-align:center;flex:1;min-width:60px;border:1px solid var(--border);}
+.countdown-num{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;color:var(--accent);line-height:1;}
+.countdown-unit{font-size:0.68rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;}
+
+/* ── SECTION BLOCKS ──────────────────────────────────────── */
+.section-block{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:18px;transition:background var(--transition);}
+.section-header{padding:14px 18px;display:flex;align-items:center;gap:10px;cursor:pointer;border-bottom:1px solid var(--border);user-select:none;transition:background var(--transition);touch-action:manipulation;}
+.section-header:hover{background:var(--card2);}
+.section-color-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.section-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.92rem;flex:1;}
+.section-weight{font-size:0.74rem;font-weight:600;background:var(--bg3);padding:2px 9px;border-radius:20px;color:var(--text2);}
+.section-pct-badge{font-size:0.74rem;font-weight:700;padding:2px 9px;border-radius:20px;color:#fff;}
+.section-chevron{color:var(--text3);font-size:0.78rem;transition:transform var(--transition);flex-shrink:0;}
+.section-block.open .section-chevron{transform:rotate(180deg);}
+.section-progress-bar{height:4px;background:var(--bg3);}
+.section-progress-fill{height:100%;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);}
+.section-topic-count{display:flex;align-items:center;gap:4px;border-radius:20px;padding:2px 9px;font-size:0.72rem;font-weight:700;transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1);}
+.topics-list{padding:6px;}
+.topic-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);margin-bottom:3px;transition:background var(--transition);cursor:pointer;}
+.topic-item:hover{background:var(--bg3);}
+.topic-item.completed{opacity:0.6;}
+.topic-item.completed .topic-name{text-decoration:line-through;color:var(--text3);}
+.topic-checkbox{width:19px;height:19px;border-radius:5px;border:2px solid var(--text3);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--transition);font-size:0.68rem;touch-action:manipulation;}
+.topic-item.completed .topic-checkbox{background:var(--accent3);border-color:var(--accent3);color:#fff;}
+.topic-name{font-size:0.85rem;flex:1;color:var(--text);}
+.priority-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:2px 7px;font-size:0.68rem;font-weight:600;cursor:pointer;transition:all var(--transition);flex-shrink:0;color:var(--text2);touch-action:manipulation;}
+.priority-btn.high{background:rgba(239,68,68,0.15);border-color:var(--high);color:var(--high);}
+.priority-btn.med{background:rgba(245,158,11,0.15);border-color:var(--med);color:var(--med);}
+.priority-btn.low{background:rgba(6,214,160,0.15);border-color:var(--low);color:var(--low);}
+.section-mark-all{display:flex;align-items:center;gap:9px;margin:3px 7px 9px;padding:9px 14px;border-radius:var(--radius-sm);border:1px dashed var(--border);cursor:pointer;font-size:0.8rem;font-weight:500;color:var(--text3);transition:all var(--transition);user-select:none;touch-action:manipulation;}
+.section-mark-all:hover{background:var(--bg3);border-color:var(--accent3);color:var(--accent3);}
+.mark-all-check{font-size:1.1rem;transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1);}
+.section-mark-all:hover .mark-all-check{transform:scale(1.3);}
+.custom-section .section-header{border-left:3px solid var(--accent3);}
+.custom-sec-badge{font-size:0.66rem;font-weight:700;background:rgba(6,214,160,0.12);color:var(--accent3);border:1px solid rgba(6,214,160,0.3);border-radius:12px;padding:2px 7px;flex-shrink:0;}
+.custom-sec-edit,.custom-sec-del{background:none;border:1px solid var(--border);border-radius:6px;padding:2px 7px;font-size:0.78rem;cursor:pointer;transition:all var(--transition);flex-shrink:0;color:var(--text2);touch-action:manipulation;}
+.custom-sec-edit:hover{border-color:var(--accent);color:var(--accent);}
+.custom-sec-del:hover{border-color:var(--high);color:var(--high);}
+
+/* ── SORT BAR ────────────────────────────────────────────── */
+.sort-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 14px;margin-bottom:16px;}
+.sort-label{font-size:0.78rem;color:var(--text2);font-weight:500;}
+.sort-btn{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:3px 12px;font-size:0.76rem;font-weight:600;cursor:pointer;color:var(--text2);transition:all var(--transition);touch-action:manipulation;}
+.sort-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.collapse-all-btn{display:flex;align-items:center;gap:6px;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:0.76rem;font-weight:600;cursor:pointer;color:var(--text2);transition:all var(--transition);white-space:nowrap;touch-action:manipulation;}
+.collapse-all-btn:hover{border-color:var(--accent);color:var(--accent);}
+.btn-new-section{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;border:none;border-radius:20px;padding:5px 14px;font-size:0.76rem;font-weight:700;cursor:pointer;transition:all var(--transition);font-family:'DM Sans',sans-serif;white-space:nowrap;box-shadow:0 2px 10px rgba(91,140,255,0.25);touch-action:manipulation;}
+.btn-new-section:hover{transform:translateY(-1px);}
+
+/* ── FILTER BAR ──────────────────────────────────────────── */
+.filter-bar{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:16px;}
+.filter-chip{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:0.76rem;font-weight:500;cursor:pointer;color:var(--text2);transition:all var(--transition);touch-action:manipulation;}
+.filter-chip.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.search-input{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-family:'DM Sans',sans-serif;font-size:0.83rem;color:var(--text);outline:none;flex:1;min-width:160px;transition:border-color var(--transition);}
+.search-input:focus{border-color:var(--accent);}
+
+/* ── PROGRESS BARS ───────────────────────────────────────── */
+.progress-track{height:6px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:7px;}
+.progress-fill{height:100%;border-radius:4px;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);}
+
+/* ── PLAN CARDS ──────────────────────────────────────────── */
+.plan-day-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden;margin-bottom:14px;animation:slideIn 0.4s ease both;transition:background var(--transition);}
+.plan-day-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--day-color,var(--accent));}
+.plan-day-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:6px;}
+.plan-day-num{font-family:'Syne',sans-serif;font-weight:800;font-size:0.95rem;}
+.plan-day-date{font-size:0.78rem;color:var(--text2);}
+.plan-day-load{font-size:0.73rem;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--bg3);color:var(--text2);}
+.plan-topic-pill{display:inline-flex;align-items:center;gap:5px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:0.76rem;color:var(--text2);margin:2px;}
+.plan-topic-pill .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+/* ── PLANNER CONTROLS ────────────────────────────────────── */
+.planner-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:18px;}
+.planner-ctrl-block{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;}
+.planner-ctrl-label{font-family:'Syne',sans-serif;font-weight:700;font-size:0.86rem;color:var(--text);margin-bottom:3px;}
+.planner-ctrl-desc{font-size:0.75rem;color:var(--text3);margin-bottom:10px;}
+.days-mode-row{display:flex;gap:7px;}
+.days-mode-btn{flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--text2);transition:all var(--transition);touch-action:manipulation;}
+.days-mode-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.days-slider-row{display:flex;align-items:center;gap:10px;}
+.days-slider-val{font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;color:var(--accent);white-space:nowrap;min-width:60px;text-align:right;}
+.days-preset-row{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap;}
+.days-preset{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2px 9px;font-size:0.71rem;font-weight:600;cursor:pointer;color:var(--text2);transition:all var(--transition);touch-action:manipulation;}
+.days-preset:hover{border-color:var(--accent);color:var(--accent);}
+.priority-mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.pmode-btn{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 6px;text-align:center;cursor:pointer;transition:all var(--transition);display:flex;flex-direction:column;align-items:center;gap:2px;touch-action:manipulation;}
+.pmode-btn.active{border-color:var(--accent);background:rgba(91,140,255,0.12);}
+.pmode-icon{font-size:1.2rem;}
+.pmode-name{font-size:0.72rem;font-weight:700;color:var(--text);}
+.pmode-sub{font-size:0.62rem;color:var(--text3);}
+.include-mode-row{display:flex;flex-direction:column;gap:7px;}
+.incl-opt{display:flex;align-items:center;gap:7px;font-size:0.8rem;color:var(--text2);cursor:pointer;padding:6px 9px;border-radius:8px;border:1px solid var(--border);background:var(--card);transition:border-color var(--transition);touch-action:manipulation;}
+.incl-opt:hover{border-color:var(--accent);}
+.incl-opt input{accent-color:var(--accent);}
+
+/* ── PLANNER SUGGEST ─────────────────────────────────────── */
+.planner-suggest-banner{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(91,140,255,0.12));border:1px solid rgba(91,140,255,0.3);border-radius:var(--radius-sm);padding:14px 18px;flex-wrap:wrap;gap:10px;}
+.suggest-icon{font-size:1.6rem;flex-shrink:0;}
+.suggest-body{flex:1;min-width:140px;}
+.suggest-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;color:var(--text);}
+.suggest-sub{font-size:0.76rem;color:var(--text2);margin-top:2px;}
+.suggest-btn{white-space:nowrap;flex-shrink:0;}
+
+/* ── PLAN SUMMARY STRIP ──────────────────────────────────── */
+.plan-summary-strip{display:flex;gap:7px;flex-wrap:wrap;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 14px;}
+.psum-chip{font-size:0.76rem;font-weight:600;color:var(--text2);background:var(--bg3);border-radius:20px;padding:2px 10px;border:1px solid var(--border);}
+
+/* ── PLAN ACTION BAR ─────────────────────────────────────── */
+.plan-action-bar-wrap{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;flex-wrap:wrap;gap:8px;}
+.plan-action-btns{display:flex;gap:7px;flex-wrap:wrap;}
+.plan-act-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;font-size:0.76rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--bg3);color:var(--text2);transition:all var(--transition);font-family:'DM Sans',sans-serif;touch-action:manipulation;}
+.plan-act-btn:hover{border-color:var(--accent);color:var(--accent);}
+.plan-act-save{background:rgba(91,140,255,0.12);border-color:rgba(91,140,255,0.4);color:var(--accent);}
+.plan-act-save:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+.plan-act-export{background:rgba(6,214,160,0.1);border-color:rgba(6,214,160,0.3);color:var(--accent3);}
+.plan-act-export:hover{background:var(--accent3);color:#fff;}
+.plan-act-import{background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.3);color:var(--accent4);}
+.plan-act-import:hover{background:var(--accent4);color:#fff;}
+.plan-saved-badge{font-size:0.73rem;font-weight:700;color:var(--accent3);background:rgba(6,214,160,0.12);border:1px solid rgba(6,214,160,0.3);border-radius:20px;padding:2px 10px;animation:fadeIn 0.3s ease;}
+.saved-plans-header{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm) var(--radius-sm) 0 0;font-size:0.8rem;font-weight:700;color:var(--text);border-bottom:none;}
+.saved-plans-list{background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);overflow:hidden;}
+.saved-plan-item{display:flex;align-items:center;gap:10px;padding:10px 13px;border-bottom:1px solid var(--border);transition:background var(--transition);}
+.saved-plan-item:last-child{border-bottom:none;}
+.saved-plan-item:hover{background:var(--bg3);}
+.saved-plan-info{flex:1;}
+.saved-plan-name{font-size:0.83rem;font-weight:600;color:var(--text);}
+.saved-plan-meta{font-size:0.71rem;color:var(--text2);margin-top:2px;}
+.saved-plan-actions{display:flex;gap:5px;}
+.spact-btn{padding:3px 9px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);font-size:0.7rem;font-weight:600;cursor:pointer;color:var(--text2);transition:all var(--transition);font-family:'DM Sans',sans-serif;touch-action:manipulation;}
+.spact-btn:hover{border-color:var(--accent);color:var(--accent);}
+.spact-btn.del:hover{border-color:var(--high);color:var(--high);}
+
+/* ── RECENT PLAN BANNER ──────────────────────────────────── */
+.recent-plan-card{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,rgba(91,140,255,0.08),rgba(124,58,237,0.08));border:1px solid rgba(91,140,255,0.3);border-radius:var(--radius-sm);padding:13px 16px;flex-wrap:wrap;animation:slideIn 0.4s ease;}
+.recent-plan-icon{font-size:1.6rem;flex-shrink:0;}
+.recent-plan-body{flex:1;min-width:140px;}
+.recent-plan-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;color:var(--text);}
+.recent-plan-meta{font-size:0.74rem;color:var(--text2);margin-top:2px;}
+.recent-plan-btns{display:flex;gap:7px;flex-shrink:0;}
+
+/* ── INSIGHTS ────────────────────────────────────────────── */
+.insight-list{display:flex;flex-direction:column;gap:9px;}
+.insight-item{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--bg3);border-radius:var(--radius-sm);border:1px solid var(--border);font-size:0.84rem;}
+.insight-icon{font-size:1.2rem;flex-shrink:0;}
+.insight-text{flex:1;color:var(--text2);}
+.insight-val{font-weight:700;color:var(--text);}
+
+/* ── MISC ────────────────────────────────────────────────── */
+.mb-4{margin-bottom:14px;}
+.mb-5{margin-bottom:18px;}
+.flex{display:flex;align-items:center;}
+.flex-between{display:flex;align-items:center;justify-content:space-between;}
+.gap-2{gap:8px;}
+.text-sm{font-size:0.8rem;}
+.text-muted{color:var(--text2);}
+.text-accent{color:var(--accent);}
+.text-high{color:var(--high);}
+.font-bold{font-weight:700;}
+.no-data{text-align:center;padding:40px 20px;color:var(--text3);}
+.no-data .big{font-size:2.8rem;margin-bottom:10px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:0.7rem;font-weight:600;}
+.badge-high{background:rgba(239,68,68,0.15);color:var(--high);}
+.section-divider{height:1px;background:var(--border);margin:16px 0;}
+.input-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+.input-group label{font-size:0.78rem;color:var(--text2);font-weight:500;}
+.input-group input{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;transition:border-color var(--transition);width:100%;}
+.input-group input:focus{border-color:var(--accent);}
+.input-group input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.6);cursor:pointer;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-weight:500;font-size:0.88rem;cursor:pointer;border:none;transition:all var(--transition);touch-action:manipulation;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--accent2);}
+.btn-outline{background:none;border:1px solid var(--border);color:var(--text2);}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+.btn-danger{background:rgba(239,68,68,0.15);border:1px solid var(--high);color:var(--high);}
+.btn-danger:hover{background:var(--high);color:#fff;}
+.moti-banner{background:linear-gradient(135deg,rgba(91,140,255,0.12),rgba(124,58,237,0.12));border:1px solid rgba(91,140,255,0.25);border-radius:var(--radius);padding:16px 22px;display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.moti-emoji{font-size:1.8rem;}
+.moti-text{font-style:italic;color:var(--text2);font-size:0.88rem;}
+.moti-author{font-size:0.76rem;color:var(--text3);margin-top:3px;}
+
+/* ── AUTH OVERLAY ────────────────────────────────────────── */
+.auth-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.75);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s ease;}
+.auth-overlay.hidden{display:none;}
+.auth-box{background:var(--card);border:1px solid var(--border);border-radius:20px;width:100%;max-width:420px;box-shadow:0 32px 80px rgba(0,0,0,0.5);overflow:hidden;animation:slideIn 0.4s cubic-bezier(0.34,1.56,0.64,1);}
+.auth-header{background:linear-gradient(135deg,var(--accent2),var(--accent));padding:26px 26px 22px;text-align:center;}
+.auth-logo{font-size:2.6rem;margin-bottom:7px;}
+.auth-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.35rem;color:#fff;letter-spacing:-0.02em;}
+.auth-subtitle{font-size:0.8rem;color:rgba(255,255,255,0.75);margin-top:3px;}
+.auth-body{padding:24px;}
+.auth-tabs{display:flex;background:var(--bg3);border-radius:10px;padding:4px;gap:4px;margin-bottom:20px;}
+.auth-tab{flex:1;background:none;border:none;cursor:pointer;padding:7px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.83rem;font-weight:600;color:var(--text2);transition:all var(--transition);touch-action:manipulation;}
+.auth-tab.active{background:var(--card);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+.auth-field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.auth-field label{font-size:0.76rem;font-weight:600;color:var(--text2);letter-spacing:0.03em;}
+.auth-field input{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;transition:border-color var(--transition);width:100%;}
+.auth-field input:focus{border-color:var(--accent);}
+.auth-field input::placeholder{color:var(--text3);}
+.auth-submit{width:100%;padding:11px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:0.98rem;margin-top:5px;transition:all var(--transition);box-shadow:0 4px 16px rgba(91,140,255,0.3);touch-action:manipulation;}
+.auth-submit:hover{transform:translateY(-2px);}
+.auth-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.auth-divider{display:flex;align-items:center;gap:10px;margin:14px 0;}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.auth-divider span{font-size:0.73rem;color:var(--text3);}
+.auth-guest{width:100%;padding:9px;border-radius:10px;background:none;border:1.5px solid var(--border);color:var(--text2);font-family:'DM Sans',sans-serif;font-weight:500;font-size:0.83rem;cursor:pointer;transition:all var(--transition);touch-action:manipulation;}
+.pass-wrap{position:relative;display:flex;align-items:center;}
+.pass-wrap input{flex:1;padding-right:42px !important;}
+.pass-eye{position:absolute;right:12px;background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--text3);padding:4px;transition:color var(--transition);touch-action:manipulation;line-height:1;}
+.pass-eye:hover{color:var(--accent);}
+.auth-guest:hover{border-color:var(--accent);color:var(--accent);}
+.auth-error{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:8px 11px;font-size:0.78rem;color:var(--high);margin-bottom:11px;display:none;}
+.auth-error.show{display:block;}
+.auth-success{background:rgba(6,214,160,0.12);border:1px solid rgba(6,214,160,0.3);border-radius:8px;padding:8px 11px;font-size:0.78rem;color:var(--accent3);margin-bottom:11px;display:none;}
+.auth-success.show{display:block;}
+
+/* ── CUSTOM SECTION MODAL ────────────────────────────────── */
+.sm-topic-row{display:flex;align-items:center;gap:7px;background:var(--bg3);border-radius:8px;padding:7px 9px;border:1px solid var(--border);}
+.sm-topic-input{flex:1;background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:0.84rem;color:var(--text);}
+.sm-topic-input::placeholder{color:var(--text3);}
+.sm-topic-del{background:none;border:none;cursor:pointer;color:var(--text3);font-size:0.95rem;padding:0 2px;transition:color var(--transition);touch-action:manipulation;}
+.sm-topic-del:hover{color:var(--high);}
+
+/* ── TOAST ───────────────────────────────────────────────── */
+.toast-container{position:fixed;bottom:20px;right:20px;z-index:2000;display:flex;flex-direction:column;gap:7px;}
+.toast{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 16px;font-size:0.83rem;color:var(--text);box-shadow:var(--shadow);animation:slideIn 0.3s ease both;display:flex;align-items:center;gap:9px;}
+
+/* ── ANIMATIONS ──────────────────────────────────────────── */
+@keyframes slideIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.fade-in{animation:fadeIn 0.5s ease both;}
+.confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.app-footer{margin-top:40px;border-top:1px solid var(--border);background:var(--bg2);padding:16px 20px;transition:background var(--transition);}
+.footer-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px;}
+.footer-copy{display:flex;align-items:center;gap:9px;font-size:0.8rem;color:var(--text2);flex-wrap:wrap;}
+.footer-logo{font-family:'Syne',sans-serif;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.footer-divider{color:var(--text3);}
+.footer-copy strong{color:var(--text);font-weight:600;}
+.footer-links{display:flex;align-items:center;gap:14px;font-size:0.78rem;color:var(--text3);}
+.footer-tg{display:inline-flex;align-items:center;gap:5px;color:#29b6f6;text-decoration:none;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid rgba(41,182,246,0.3);background:rgba(41,182,246,0.08);transition:all var(--transition);}
+.footer-tg:hover{background:rgba(41,182,246,0.18);border-color:rgba(41,182,246,0.6);transform:translateY(-1px);}
+
+/* ── GUEST BANNER ─────────────────────────────────────────── */
+.guest-banner{
+  display:none;
+  background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(91,140,255,0.15));
+  border:1.5px solid rgba(91,140,255,0.4);
+  border-radius:var(--radius-sm);
+  padding:14px 20px;
+  margin-bottom:20px;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+  animation:slideIn 0.4s ease;
+}
+.guest-banner.show{display:flex;}
+.guest-banner-icon{font-size:1.8rem;flex-shrink:0;}
+.guest-banner-body{flex:1;min-width:180px;}
+.guest-banner-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.92rem;color:var(--text);}
+.guest-banner-sub{font-size:0.78rem;color:var(--text2);margin-top:3px;}
+.guest-banner-btn{
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  color:#fff;border:none;border-radius:8px;
+  padding:8px 20px;font-size:0.84rem;font-weight:700;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all var(--transition);flex-shrink:0;
+  touch-action:manipulation;
+}
+.guest-banner-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(91,140,255,0.4);}
+button,.filter-chip,.sort-btn,.nav-tab,.auth-submit,.auth-guest,.auth-tab,.plan-act-btn,.btn,.collapse-all-btn,.btn-new-section,.section-mark-all,.topic-item,.section-header,.theme-btn,.user-pill{-webkit-tap-highlight-color:transparent;touch-action:manipulation;cursor:pointer;}
+input,select{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+@media(max-width:700px){
+  .app-header{padding:0 12px;height:auto;flex-wrap:wrap;gap:8px;padding-top:8px;padding-bottom:8px;}
+  .nav-tabs{order:3;width:100%;overflow-x:auto;}
+  .nav-tab{padding:5px 10px;font-size:0.76rem;}
+  main{padding:14px 10px;}
+  .subject-cards{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:420px){.subject-cards{grid-template-columns:1fr;}}
+@media print{
+  .app-header,.app-footer,.subject-selector,.subject-bar,.plan-action-bar-wrap,#plan-summary-row,#plan-action-bar,.card.mb-5,.planner-controls,.planner-suggest-banner,.nav-tabs,.theme-btn,.auth-overlay,.user-menu,.toast-container{display:none!important;}
+  body{background:#fff!important;color:#000!important;}
+  .plan-day-card{break-inside:avoid;border:1px solid #ccc!important;background:#fff!important;margin-bottom:10px;}
+  .panel{display:none!important;}
+  #panel-planner{display:block!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── AUTH OVERLAY ──────────────────────────────────────── -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-box">
+    <div class="auth-header">
+      <div class="auth-logo">🏥</div>
+      <div class="auth-title">IraqiMed Blueprint</div>
+      <div class="auth-subtitle">6th Year Exam Planner — Dr. Ahmed H. Fadl</div>
+    </div>
+    <div class="auth-body">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="atab-login" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab" id="atab-register" onclick="switchAuthTab('register')">Register</button>
+      </div>
+      <div id="auth-error" class="auth-error"></div>
+      <div id="auth-success" class="auth-success"></div>
+      <div id="auth-login-form">
+        <div class="auth-field"><label>USERNAME</label><input type="text" id="login-user" placeholder="Enter username" autocomplete="username"/></div>
+        <div class="auth-field"><label>PASSWORD</label><div class="pass-wrap"><input type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/><button class="pass-eye" type="button" onclick="togglePass('login-pass',this)" tabindex="-1">👁</button></div></div>
+        <button class="auth-submit" id="auth-submit-btn" onclick="doLogin()">Sign In →</button>
+        <div style="text-align:center;margin-top:12px;font-size:0.76rem;color:var(--text3);line-height:1.6;">
+          Forgot your password?<br/>
+          <a href="https://t.me/AH7Hf" target="_blank" rel="noopener"
+             style="color:#29b6f6;font-weight:700;text-decoration:none;">
+            📲 Contact Dr. Ahmed H. Fadl on Telegram @AH7Hf
+          </a>
+        </div>
+      </div>
+      <div id="auth-register-form" style="display:none;">
+        <div class="auth-field"><label>FULL NAME</label><input type="text" id="reg-name" placeholder="Dr. Your Name"/></div>
+        <div class="auth-field"><label>USERNAME</label><input type="text" id="reg-user" placeholder="Letters, numbers, _ only"/></div>
+        <div class="auth-field"><label>PASSWORD</label><div class="pass-wrap"><input type="password" id="reg-pass" placeholder="Min 4 characters"/><button class="pass-eye" type="button" onclick="togglePass('reg-pass',this)" tabindex="-1">👁</button></div></div>
+        <div class="auth-field">
+          <label>🔑 VERIFICATION CODE</label>
+          <input type="text" id="reg-code" placeholder="Enter your access code" autocomplete="off" style="letter-spacing:0.12em;font-weight:600;" onkeydown="if(event.key==='Enter')doRegister()"/>
+          <span style="font-size:0.72rem;color:var(--text3);margin-top:3px;">Contact Dr. Ahmed H. Fadl on Telegram @AH7Hf to get your code</span>
+        </div>
+        <button class="auth-submit" id="auth-register-btn" onclick="doRegister()">Create Account →</button>
+      </div>
+      <div class="auth-divider"><span>or</span></div>
+      <button class="auth-guest" onclick="continueAsGuest()">👤 Continue as Guest</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHANGE PASSWORD MODAL ─────────────────────────────── -->
+<div class="auth-overlay hidden" id="chpass-overlay">
+  <div class="auth-box">
+    <div class="auth-header"><div class="auth-logo">🔑</div><div class="auth-title">Change Password</div></div>
+    <div class="auth-body">
+      <div id="chpass-error" class="auth-error"></div>
+      <div id="chpass-success" class="auth-success"></div>
+      <div class="auth-field"><label>CURRENT PASSWORD</label><div class="pass-wrap"><input type="password" id="chpass-old" placeholder="Current password"/><button class="pass-eye" type="button" onclick="togglePass('chpass-old',this)" tabindex="-1">👁</button></div></div>
+      <div class="auth-field"><label>NEW PASSWORD</label><div class="pass-wrap"><input type="password" id="chpass-new" placeholder="New password"/><button class="pass-eye" type="button" onclick="togglePass('chpass-new',this)" tabindex="-1">👁</button></div></div>
+      <div class="auth-field"><label>CONFIRM NEW PASSWORD</label><div class="pass-wrap"><input type="password" id="chpass-confirm" placeholder="Confirm new password" onkeydown="if(event.key==='Enter')doChangePassword()"/><button class="pass-eye" type="button" onclick="togglePass('chpass-confirm',this)" tabindex="-1">👁</button></div></div>
+      <button class="auth-submit" onclick="doChangePassword()">Update Password →</button>
+      <div class="auth-divider"><span>or</span></div>
+      <button class="auth-guest" onclick="closeChangePassword()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CUSTOM SECTION MODAL ──────────────────────────────── -->
+<div class="auth-overlay hidden" id="section-modal-overlay">
+  <div class="auth-box" style="max-width:500px;">
+    <div class="auth-header" id="section-modal-header">
+      <div class="auth-logo">📚</div>
+      <div class="auth-title" id="section-modal-title">New Section</div>
+      <div class="auth-subtitle">Add a custom study section</div>
+    </div>
+    <div class="auth-body" style="max-height:80vh;overflow-y:auto;">
+      <div id="section-modal-error" class="auth-error"></div>
+      <div style="display:grid;grid-template-columns:1fr auto auto;gap:9px;align-items:end;margin-bottom:12px;">
+        <div class="auth-field" style="margin-bottom:0;"><label>SECTION NAME</label><input type="text" id="sm-name" placeholder="e.g. Cardiac Surgery" maxlength="60"/></div>
+        <div class="auth-field" style="margin-bottom:0;"><label>EXAM %</label><input type="number" id="sm-weight" placeholder="0" min="0" max="100" style="width:68px;"/></div>
+        <div class="auth-field" style="margin-bottom:0;"><label>COLOR</label><input type="color" id="sm-color" value="#5b8cff" style="width:44px;height:40px;border-radius:8px;cursor:pointer;padding:2px;"/></div>
+      </div>
+      <div style="font-size:0.76rem;font-weight:600;color:var(--text2);letter-spacing:0.03em;margin-bottom:7px;">TOPICS</div>
+      <div id="sm-topics-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:9px;"></div>
+      <button class="auth-guest" onclick="addTopicRow()" style="margin-bottom:14px;">＋ Add Topic</button>
+      <button class="auth-submit" id="section-modal-save-btn" onclick="saveCustomSection()">Save Section</button>
+      <div class="auth-divider"><span>or</span></div>
+      <button class="auth-guest" onclick="closeSectionModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── USER MENU ─────────────────────────────────────────── -->
+<div class="user-menu" id="user-menu">
+  <div class="user-menu-header">
+    <div class="user-menu-name" id="umenu-name">Guest</div>
+    <div class="user-menu-email" id="umenu-detail">Local session</div>
+  </div>
+  <div class="user-menu-item" id="admin-menu-item" onclick="openAdmin()" style="display:none;">🛡️ Admin Panel</div>
+  <div class="user-menu-item" onclick="showChangePassword()">🔑 Change Password</div>
+  <div class="user-menu-item danger" onclick="doLogout()">🚪 Sign Out</div>
+</div>
+
+<!-- ── TOAST CONTAINER ───────────────────────────────────── -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ── HEADER ─────────────────────────────────────────────── -->
+<header class="app-header">
+  <div class="logo">🏥 IraqiMed <span style="opacity:0.7;">Blueprint</span></div>
+  <div class="header-actions">
+    <nav class="nav-tabs" id="main-nav" style="display:none;">
+      <button class="nav-tab active" onclick="switchPanel('dashboard')">📊 Dashboard</button>
+      <button class="nav-tab" onclick="switchPanel('topics')">📋 Topics</button>
+      <button class="nav-tab" onclick="switchPanel('planner')">📅 Study Plan</button>
+      <button class="nav-tab" onclick="switchPanel('insights')">🎯 Insights</button>
+    </nav>
+    <div class="user-pill" id="user-pill" onclick="toggleUserMenu()" style="display:none;">
+      <div class="user-avatar" id="user-avatar">G</div>
+      <div class="user-name" id="user-name-pill">Guest</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
+  </div>
+</header>
+
+<!-- ── SUBJECT SELECTOR ──────────────────────────────────── -->
+<div class="subject-selector hidden" id="subject-selector">
+  <div class="subject-sel-title">Choose Your Subject</div>
+  <div class="subject-sel-sub">Select the exam you are preparing for</div>
+  <div class="subject-cards" id="subject-cards-container"></div>
+</div>
+
+<!-- ── ACTIVE SUBJECT BAR ────────────────────────────────── -->
+<div class="subject-bar" id="subject-bar">
+  <div class="subject-bar-icon" id="sb-icon">🏥</div>
+  <div>
+    <div class="subject-bar-name" id="sb-name">Subject</div>
+  </div>
+  <button class="subject-bar-change" onclick="openSubjectSelector()">⇄ Change Subject</button>
+</div>
+
+<!-- ── MAIN ───────────────────────────────────────────────── -->
+<main id="main-content" style="display:none;">
+
+<!-- ── GUEST BANNER ───────────────────────────────────────── -->
+<div class="guest-banner" id="guest-banner">
+  <div class="guest-banner-icon">👁️</div>
+  <div class="guest-banner-body">
+    <div class="guest-banner-title">You are browsing in Guest (View-Only) mode</div>
+    <div class="guest-banner-sub">You can explore all subjects and topics, but cannot track progress, set priorities, or generate plans. Register to unlock all features.</div>
+  </div>
+  <button class="guest-banner-btn" onclick="promptGuestRegister()">📝 Register Free</button>
+</div>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div class="panel active" id="panel-dashboard">
+  <div class="moti-banner fade-in" id="moti-banner">
+    <div class="moti-emoji">💡</div>
+    <div>
+      <div class="moti-text" id="moti-text">"The secret of getting ahead is getting started."</div>
+      <div class="moti-author" id="moti-author">— Mark Twain</div>
+    </div>
+  </div>
+  <div class="grid-2 mb-5">
+    <div class="overall-progress-wrap fade-in">
+      <div class="overall-pct" id="overall-pct">0%</div>
+      <div class="overall-label">Overall Exam Readiness</div>
+      <div class="overall-bar-track"><div class="overall-bar-fill" id="overall-bar" style="width:0%"></div></div>
+      <div class="overall-meta">
+        <span><span id="done-count">0</span> completed</span>
+        <span><span id="remain-count">0</span> remaining</span>
+        <span><span id="total-count">0</span> total</span>
+      </div>
+    </div>
+    <div class="card fade-in">
+      <div class="card-title"><div class="icon" style="background:rgba(245,158,11,0.15);">⏰</div>Exam Countdown</div>
+      <div class="input-group"><label>Exam Date</label><input type="date" id="exam-date-input" onchange="saveExamDate()"/></div>
+      <div class="countdown-wrap" id="countdown-wrap">
+        <div class="countdown-box"><div class="countdown-num" id="cd-days">—</div><div class="countdown-unit">Days</div></div>
+        <div class="countdown-box"><div class="countdown-num" id="cd-hours">—</div><div class="countdown-unit">Hours</div></div>
+        <div class="countdown-box"><div class="countdown-num" id="cd-mins">—</div><div class="countdown-unit">Mins</div></div>
+        <div class="countdown-box"><div class="countdown-num" id="cd-secs">—</div><div class="countdown-unit">Secs</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid-4 mb-5">
+    <div class="stat-card fade-in" style="--accent-grad:linear-gradient(90deg,#5b8cff,#7c3aed)"><div class="stat-icon">✅</div><div class="stat-val" id="stat-done">0</div><div class="stat-label">Completed</div><div class="stat-sub" id="stat-done-sub">topics finished</div></div>
+    <div class="stat-card fade-in" style="--accent-grad:linear-gradient(90deg,#ef4444,#f59e0b)"><div class="stat-icon">🔥</div><div class="stat-val" id="stat-high">0</div><div class="stat-label">High Priority Left</div><div class="stat-sub">need attention</div></div>
+    <div class="stat-card fade-in" style="--accent-grad:linear-gradient(90deg,#06d6a0,#5b8cff)"><div class="stat-icon">📅</div><div class="stat-val" id="stat-daily">—</div><div class="stat-label">Topics/Day Needed</div><div class="stat-sub" id="stat-daily-sub">to finish in time</div></div>
+    <div class="stat-card fade-in" style="--accent-grad:linear-gradient(90deg,#ec4899,#7c3aed)"><div class="stat-icon">🏁</div><div class="stat-val" id="stat-days-left">—</div><div class="stat-label">Days Remaining</div><div class="stat-sub">until exam day</div></div>
+  </div>
+  <div class="card mb-5 fade-in">
+    <div class="card-title"><div class="icon" style="background:rgba(91,140,255,0.15);">📊</div>Section Progress</div>
+    <div id="section-progress-list"></div>
+  </div>
+</div>
+
+<!-- ==================== TOPICS ==================== -->
+<div class="panel" id="panel-topics">
+  <div class="filter-bar">
+    <input class="search-input" type="text" placeholder="🔍  Search topics..." id="search-input" oninput="filterTopics()"/>
+    <div class="filter-chip active" onclick="setFilter(this,'all')">All</div>
+    <div class="filter-chip" onclick="setFilter(this,'incomplete')">Incomplete</div>
+    <div class="filter-chip" onclick="setFilter(this,'completed')">Completed</div>
+    <div class="filter-chip" onclick="setFilter(this,'high')">🔴 High</div>
+    <div class="filter-chip" onclick="setFilter(this,'med')">🟡 Medium</div>
+    <div class="filter-chip" onclick="setFilter(this,'low')">🟢 Low</div>
+  </div>
+  <div class="sort-bar mb-4">
+    <span class="sort-label">Sort by exam %:</span>
+    <button class="sort-btn active" id="sort-default" onclick="setSortOrder('default')">📋 Default</button>
+    <button class="sort-btn" id="sort-high" onclick="setSortOrder('high')">📈 High → Low</button>
+    <button class="sort-btn" id="sort-low" onclick="setSortOrder('low')">📉 Low → High</button>
+    <div style="flex:1;"></div>
+    <button class="btn-new-section" onclick="openNewSectionModal()">＋ New Section</button>
+    <button class="collapse-all-btn" id="collapse-all-btn" onclick="toggleAllSections()">
+      <span id="collapse-all-icon">⊖</span> Collapse All
+    </button>
+  </div>
+  <div id="topics-container"></div>
+</div>
+
+<!-- ==================== PLANNER ==================== -->
+<div class="panel" id="panel-planner">
+  <div class="card mb-5">
+    <div class="card-title"><div class="icon" style="background:rgba(6,214,160,0.15);">🧠</div>Smart Study Planner</div>
+    <p class="text-muted text-sm mb-4">Configure your plan — choose days, priority mode, and let the planner build your schedule.</p>
+    <div class="planner-controls">
+      <div class="planner-ctrl-block">
+        <div class="planner-ctrl-label">📅 Study Duration</div>
+        <div class="planner-ctrl-desc">How many days to study?</div>
+        <div class="days-mode-row">
+          <button class="days-mode-btn active" id="dmode-auto" onclick="setDaysMode('auto')">Auto (exam date)</button>
+          <button class="days-mode-btn" id="dmode-custom" onclick="setDaysMode('custom')">Custom</button>
+        </div>
+        <div id="custom-days-wrap" style="display:none;margin-top:9px;">
+          <div class="days-slider-row">
+            <input type="range" id="days-slider" min="1" max="90" value="14" oninput="updateDaysSlider()" style="flex:1;accent-color:var(--accent);">
+            <div class="days-slider-val" id="days-slider-val">14 days</div>
+          </div>
+          <div class="days-preset-row">
+            <span class="days-preset" onclick="setDaysPreset(7)">1 week</span>
+            <span class="days-preset" onclick="setDaysPreset(14)">2 weeks</span>
+            <span class="days-preset" onclick="setDaysPreset(21)">3 weeks</span>
+            <span class="days-preset" onclick="setDaysPreset(30)">1 month</span>
+          </div>
+        </div>
+      </div>
+      <div class="planner-ctrl-block">
+        <div class="planner-ctrl-label">🎯 Priority Mode</div>
+        <div class="planner-ctrl-desc">Which topics appear first?</div>
+        <div class="priority-mode-grid">
+          <button class="pmode-btn active" id="pmode-exam" onclick="setPrioMode('exam')"><span class="pmode-icon">📊</span><span class="pmode-name">Exam Weight</span><span class="pmode-sub">High % first</span></button>
+          <button class="pmode-btn" id="pmode-user" onclick="setPrioMode('user')"><span class="pmode-icon">⭐</span><span class="pmode-name">My Priority</span><span class="pmode-sub">Starred first</span></button>
+          <button class="pmode-btn" id="pmode-both" onclick="setPrioMode('both')"><span class="pmode-icon">🔀</span><span class="pmode-name">Combined</span><span class="pmode-sub">Both factors</span></button>
+        </div>
+      </div>
+      <div class="planner-ctrl-block" style="grid-column:1/-1;">
+        <div class="planner-ctrl-label">📌 Include Topics</div>
+        <div class="planner-ctrl-desc">Which topics to include?</div>
+        <div class="include-mode-row">
+          <label class="incl-opt"><input type="radio" name="incl" value="remaining" checked onchange="state.planInclude=this.value;updateSuggestBanner()"> Remaining only</label>
+          <label class="incl-opt"><input type="radio" name="incl" value="all" onchange="state.planInclude=this.value;updateSuggestBanner()"> All topics</label>
+          <label class="incl-opt"><input type="radio" name="incl" value="high_only" onchange="state.planInclude=this.value;updateSuggestBanner()"> High-priority only</label>
+        </div>
+      </div>
+    </div>
+    <div class="planner-suggest-banner" id="suggest-banner">
+      <div class="suggest-icon">💡</div>
+      <div class="suggest-body">
+        <div class="suggest-title" id="suggest-title">Set your preferences above</div>
+        <div class="suggest-sub" id="suggest-sub">Click "Suggest Plan" to get a recommendation.</div>
+      </div>
+      <button class="btn btn-outline suggest-btn" onclick="suggestPlan()">✨ Suggest</button>
+    </div>
+    <div class="flex gap-2" style="margin-top:14px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="generatePlan()">⚡ Generate Plan</button>
+      <button class="btn btn-outline" onclick="clearPlan()">🗑 Clear</button>
+    </div>
+  </div>
+  <div id="plan-summary-row" style="display:none;margin-bottom:10px;"><div class="plan-summary-strip"><span class="psum-chip" id="psum-days"></span><span class="psum-chip" id="psum-topics"></span><span class="psum-chip" id="psum-mode"></span><span class="psum-chip" id="psum-load"></span></div></div>
+  <div id="plan-action-bar" style="display:none;margin-bottom:18px;">
+    <div class="plan-action-bar-wrap">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="plan-saved-badge" id="plan-saved-badge" style="display:none;">✅ Saved</span>
+      </div>
+      <div class="plan-action-btns">
+        <button class="plan-act-btn plan-act-save" onclick="savePlan()">💾 Save</button>
+        <button class="plan-act-btn plan-act-save" onclick="showSavedPlans()">📂 Saved Plans</button>
+        <button class="plan-act-btn plan-act-export" onclick="exportPlanJSON()">📤 Export JSON</button>
+        <button class="plan-act-btn plan-act-export" onclick="exportPlanPDF()">🖨 Print</button>
+        <label class="plan-act-btn plan-act-import">📥 Import<input type="file" accept=".json" style="display:none;" onchange="importPlan(event)"/></label>
+      </div>
+    </div>
+    <div id="saved-plans-wrap" style="display:none;margin-top:10px;">
+      <div class="saved-plans-header"><span>📂 Saved Plans</span><button class="spact-btn" onclick="closeSavedPlans()">✕ Close</button></div>
+      <div id="saved-plans-list" class="saved-plans-list"></div>
+    </div>
+  </div>
+  <div id="recent-plan-banner" style="display:none;margin-bottom:14px;">
+    <div class="recent-plan-card">
+      <div class="recent-plan-icon">🕐</div>
+      <div class="recent-plan-body">
+        <div class="recent-plan-title" id="recent-plan-title">Last Generated Plan</div>
+        <div class="recent-plan-meta" id="recent-plan-meta"></div>
+      </div>
+      <div class="recent-plan-btns">
+        <button class="plan-act-btn plan-act-save" onclick="loadLastPlan()">📂 Load</button>
+        <button class="plan-act-btn" onclick="dismissRecentBanner()" style="padding:6px 9px;">✕</button>
+      </div>
+    </div>
+  </div>
+  <div id="plan-container"><div class="no-data"><div class="big">📅</div>Configure options above and click "Generate Plan".</div></div>
+</div>
+
+<!-- ==================== INSIGHTS ==================== -->
+<div class="panel" id="panel-insights">
+  <div class="grid-2 mb-5">
+    <div class="card"><div class="card-title"><div class="icon" style="background:rgba(239,68,68,0.15);">🎯</div>Key Insights</div><div class="insight-list" id="insights-list"></div></div>
+    <div class="card"><div class="card-title"><div class="icon" style="background:rgba(245,158,11,0.15);">🔥</div>High Priority Unfinished</div><div id="high-priority-list" class="insight-list"></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><div class="icon" style="background:rgba(91,140,255,0.15);">📈</div>Section Breakdown</div>
+    <div id="section-breakdown"></div>
+  </div>
+  <div class="section-divider"></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+    <button class="btn btn-danger" onclick="confirmReset()">🔄 Reset Progress</button>
+    <button class="btn btn-outline" onclick="exportData()">💾 Export Data</button>
+  </div>
+</div>
+
+</main>
+
+<!-- ── ADMIN PANEL ─────────────────────────────────────────── -->
+<div class="auth-overlay hidden" id="admin-overlay">
+  <div class="auth-box" style="max-width:540px;">
+    <div class="auth-header" style="background:linear-gradient(135deg,#1a1a2e,#16213e);">
+      <div class="auth-logo">🛡️</div>
+      <div class="auth-title">Admin Panel</div>
+      <div class="auth-subtitle">Dr. Ahmed H. Fadl — Code Management</div>
+    </div>
+    <div class="auth-body" style="max-height:85vh;overflow-y:auto;">
+      <div id="admin-error" class="auth-error"></div>
+
+      <!-- Admin login -->
+      <div id="admin-login-wrap">
+        <div class="auth-field"><label>ADMIN PASSWORD</label><div class="pass-wrap"><input type="password" id="admin-pass" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')adminLogin()"/><button class="pass-eye" type="button" onclick="togglePass('admin-pass',this)" tabindex="-1">👁</button></div></div>
+        <button class="auth-submit" onclick="adminLogin()">Enter Admin Panel →</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button class="auth-guest" onclick="closeAdmin()">Cancel</button>
+      </div>
+
+      <!-- Admin dashboard -->
+      <div id="admin-dashboard-wrap" style="display:none;">
+        <!-- Generate new code -->
+        <div style="margin-bottom:18px;">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:10px;">Generate New Access Code</div>
+          <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;margin-bottom:8px;">
+            <div class="auth-field" style="margin-bottom:0;"><label>NOTE (optional)</label><input type="text" id="code-note" placeholder="e.g. Student name or batch"/></div>
+            <div class="auth-field" style="margin-bottom:0;"><label>USES</label><input type="number" id="code-uses" value="1" min="1" max="100" style="width:70px;"/></div>
+          </div>
+          <button class="auth-submit" onclick="adminGenerateCode()" style="margin-top:0;">⚡ Generate Code</button>
+        </div>
+
+        <!-- Generated code display -->
+        <div id="new-code-display" style="display:none;margin-bottom:16px;">
+          <div style="background:rgba(6,214,160,0.12);border:1px solid rgba(6,214,160,0.4);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:0.76rem;font-weight:600;color:var(--accent3);margin-bottom:6px;">✅ NEW CODE GENERATED — Share this with the student:</div>
+            <div id="new-code-value" style="font-family:monospace;font-size:1.4rem;font-weight:800;color:var(--text);letter-spacing:0.15em;text-align:center;padding:8px;background:var(--bg3);border-radius:8px;cursor:pointer;" onclick="copyNewCode()" title="Click to copy"></div>
+            <div style="font-size:0.72rem;color:var(--text3);text-align:center;margin-top:6px;">Click the code to copy · Will be used <span id="new-code-uses"></span> time(s)</div>
+          </div>
+        </div>
+
+        <!-- Active codes list -->
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:8px;">Active Codes</div>
+        <div id="codes-list" style="display:flex;flex-direction:column;gap:7px;max-height:300px;overflow-y:auto;"></div>
+        <button class="auth-guest" onclick="loadAdminCodes()" style="margin-top:10px;">🔄 Refresh</button>
+        <div class="auth-divider"><span></span></div>
+
+        <!-- Registered users -->
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:8px;">Registered Students</div>
+        <div id="users-list" style="display:flex;flex-direction:column;gap:5px;max-height:240px;overflow-y:auto;margin-bottom:10px;"></div>
+        <button class="auth-guest" onclick="loadAdminUsers()" style="margin-top:4px;">🔄 Refresh Students</button>
+
+        <div class="auth-divider"><span>or</span></div>
+        <button class="auth-guest" onclick="closeAdmin()">Close Admin Panel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.code-row{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:9px 12px;}
+.code-val{font-family:monospace;font-weight:700;font-size:0.95rem;color:var(--accent);flex:1;letter-spacing:0.1em;}
+.code-meta{font-size:0.72rem;color:var(--text2);}
+.code-del{background:none;border:1px solid var(--border);border-radius:6px;padding:3px 9px;font-size:0.72rem;color:var(--text3);cursor:pointer;transition:all var(--transition);touch-action:manipulation;}
+.code-del:hover{border-color:var(--high);color:var(--high);}
+.code-used{opacity:0.45;text-decoration:line-through;}
+.user-row{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;}
+.user-row-name{font-size:0.83rem;font-weight:600;color:var(--text);flex:1;}
+.user-row-meta{font-size:0.71rem;color:var(--text2);}
+</style>
+<footer class="app-footer">
+  <div class="footer-inner">
+    <div class="footer-copy">
+      <span class="footer-logo">🏥 IraqiMed Blueprint</span>
+      <span class="footer-divider">|</span>
+      <span>Designed by <strong>Dr. Ahmed H. Fadl</strong></span>
+    </div>
+    <div class="footer-links">
+      <a class="footer-tg" href="https://t.me/AH7Hf" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.24 14.548l-2.95-.924c-.64-.203-.654-.64.136-.954l11.527-4.448c.537-.194 1.006.131.609.026z"/></svg>
+        @AH7Hf
+      </a>
+      <span>© <span id="footer-year"></span></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   FIREBASE CONFIG
+   ============================================================ */
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyAXKzAjenQqJsCzgLGy26ReRejHA48UPnE",
+  authDomain:        "surgery-3d8e5.firebaseapp.com",
+  projectId:         "surgery-3d8e5",
+  storageBucket:     "surgery-3d8e5.firebasestorage.app",
+  messagingSenderId: "634997950",
+  appId:             "1:634997950:web:72890df69075a70e6662ef",
+  measurementId:     "G-TPWL4B5F9Y"
+};
+
+/* ============================================================
+   SUBJECT BLUEPRINTS
+   ============================================================ */
+const SUBJECTS = {
+  surgery: {
+    id:'surgery', name:'Surgery', icon:'🔪', color:'#5b8cff',
+    grad:'linear-gradient(135deg,#5b8cff,#7c3aed)',
+    desc:'General Surgery & Branches',
+    totalQ:100,
+    sections:[
+      {id:'s_gen_basic',name:'Basic Surgical Principles',weight:2,color:'#5b8cff',topics:[
+        {id:'s_gb1',name:'Metabolic Response to Injury',w:0.2},{id:'s_gb2',name:'Shock, Hemorrhage & Transfusion',w:0.2},{id:'s_gb3',name:'Wound Healing & Tissue Repair',w:0.2},{id:'s_gb4',name:'Surgical Infection',w:0.2},{id:'s_gb5',name:'Tropical Infections',w:0.2},{id:'s_gb6',name:'Basic Surgical Skills',w:0.2},{id:'s_gb7',name:'Principles of Minimal Access Surgery',w:0.2},{id:'s_gb8',name:'Principles of Oncology',w:0.2},{id:'s_gb9',name:'Tissue & Molecular Diagnosis',w:0.2},{id:'s_gb10',name:'Ethics / Patient Safety',w:0.2}]},
+      {id:'s_peds',name:'General Pediatrics',weight:2,color:'#7c3aed',topics:[{id:'s_pe1',name:'Pediatric Pathologies & Surgery',w:1},{id:'s_pe2',name:'Trauma in Children',w:1}]},
+      {id:'s_peri',name:'Peri-operative Care',weight:2,color:'#06d6a0',topics:[{id:'s_pr1',name:'Peri-operative Care to High Risk Patients',w:1},{id:'s_pr2',name:'Day Case Surgery',w:0.5},{id:'s_pr3',name:'Nutrition & Fluid Therapy',w:0.5}]},
+      {id:'s_abdom',name:'Abdominal Wall, Hernia & Umbilicus',weight:2,color:'#f59e0b',topics:[{id:'s_ab1',name:'Hernia (Anatomy/Types/Presentation/Surgery)',w:1},{id:'s_ab2',name:'Abdominal/Umbilical Infections & Tumors',w:1}]},
+      {id:'s_diab',name:'Diabetic Foot, Ulcer, Sinus, Fistula & Cyst',weight:2,color:'#ef4444',topics:[{id:'s_df1',name:'Diabetic Foot',w:0.5},{id:'s_df2',name:'Ulcers',w:0.5},{id:'s_df3',name:'Sinuses',w:0.5},{id:'s_df4',name:'Fistula',w:0.5},{id:'s_df5',name:'Cysts',w:0.5}]},
+      {id:'s_git',name:'GIT (Gastrointestinal Tract)',weight:18,color:'#ec4899',topics:[
+        {id:'s_gt1',name:'History & Examination of the Abdomen',w:1},{id:'s_gt2',name:'Gastrointestinal Endoscopy',w:1},{id:'s_gt3',name:'Peritoneum / Mesentery / Retroperitoneum',w:1},{id:'s_gt4',name:'The Esophagus',w:1},{id:'s_gt5',name:'The Stomach & Duodenum',w:1},{id:'s_gt6',name:'Bariatric & Metabolic Surgery',w:1},{id:'s_gt7',name:'The Liver',w:1},{id:'s_gt8',name:'The Spleen',w:1},{id:'s_gt9',name:'Gall Bladder & Bile Ducts',w:1},{id:'s_gt10',name:'The Pancreas',w:1},{id:'s_gt11',name:'Functional Disorders of the Intestine',w:1},{id:'s_gt12',name:'The Small Intestine',w:1},{id:'s_gt13',name:'Inflammatory Bowel Disease',w:1},{id:'s_gt14',name:'The Appendix',w:1},{id:'s_gt15',name:'The Large Intestine',w:1},{id:'s_gt16',name:'Intestinal Obstruction',w:1},{id:'s_gt17',name:'The Rectum',w:1},{id:'s_gt18',name:'The Anus & Anal Canal',w:1}]},
+      {id:'s_atls',name:'ATLS Principles',weight:2,color:'#14b8a6',topics:[{id:'s_at1',name:'Primary Survey',w:1},{id:'s_at2',name:'Secondary Survey',w:1}]},
+      {id:'s_breast',name:'Breast',weight:3,color:'#8b5cf6',topics:[{id:'s_br1',name:'Inflammatory Disorders / Anatomy',w:1},{id:'s_br2',name:'Nipple & Areola Diseases & Discharge',w:1},{id:'s_br3',name:'Breast Lumps / Tumors',w:1}]},
+      {id:'s_thyroid',name:'Thyroid / Endocrine Diseases',weight:3,color:'#f97316',topics:[
+        {id:'s_th1',name:'Thyroid Anatomy & Investigations',w:0.5},{id:'s_th2',name:'Hyperthyroidism & Hypothyroidism',w:0.5},{id:'s_th3',name:'Inflammatory Diseases of Thyroid',w:0.5},{id:'s_th4',name:'Goitre / Neck Masses',w:0.5},{id:'s_th5',name:'Thyroid Nodules (Benign, Malignant)',w:0.5},{id:'s_th6',name:'Post Thyroid Surgery Emergencies',w:0.5},{id:'s_th7',name:'Parathyroid Disorders',w:0.5},{id:'s_th8',name:'Adrenal Disorders / Surgery',w:0.5},{id:'s_th9',name:'Multiple Endocrine Neoplasias (MEN)',w:0.5}]},
+      {id:'s_head',name:'Head & Neck',weight:2,color:'#a3e635',topics:[{id:'s_hn1',name:'Cervical Lymphadenopathy',w:1},{id:'s_hn2',name:'Salivary Gland Disorders',w:1},{id:'s_hn3',name:'Congenital Cysts / Pharyngeal Pouch',w:1}]},
+      {id:'s_trauma',name:'Abdominal Trauma',weight:2,color:'#5b8cff',topics:[{id:'s_tr1',name:'Liver Injury',w:1},{id:'s_tr2',name:'Splenic Injury',w:1},{id:'s_tr3',name:'Bowel Injury',w:1}]},
+      {id:'s_ortho',name:'Orthopedics',weight:25,color:'#7c3aed',topics:[
+        {id:'s_or1',name:'Approach to Patients with Multiple Traumas',w:1},{id:'s_or2',name:'Classification of Fractures',w:1},{id:'s_or3',name:'Complications of Fractures',w:1},{id:'s_or4',name:'Shoulder Fractures / Dislocations',w:1},{id:'s_or5',name:'Humerus Fractures',w:1},{id:'s_or6',name:'Radius & Ulna Fractures',w:1},{id:'s_or7',name:'Wrist & Hand Fractures',w:1},{id:'s_or8',name:'Spine Fractures',w:1},{id:'s_or9',name:'Pelvic Fractures',w:1},{id:'s_or10',name:'Hip & Acetabulum Fractures / Dislocations',w:1},{id:'s_or11',name:'Femoral Fractures',w:1},{id:'s_or12',name:'Knee Joint Dislocation',w:1},{id:'s_or13',name:'Tibia & Fibula Fractures',w:1},{id:'s_or14',name:'Ankle Injuries',w:1},{id:'s_or15',name:'Foot Fractures',w:1},{id:'s_or16',name:'Nerve Injuries',w:1},{id:'s_or17',name:'Bone & Joint Infections',w:1},{id:'s_or18',name:'Genetic & Metabolic Bone Disorders',w:1},{id:'s_or19',name:'Bone & Joint Tumors',w:1},{id:'s_or20',name:'Non-traumatic: Shoulder',w:1},{id:'s_or21',name:'Non-traumatic: Elbow, Wrist & Hand',w:1},{id:'s_or22',name:'Non-traumatic: Hip',w:1},{id:'s_or23',name:'Non-traumatic: Knee',w:1},{id:'s_or24',name:'Non-traumatic: Ankle & Foot',w:1},{id:'s_or25',name:'Non-traumatic: Neck & Spine',w:1}]},
+      {id:'s_uro',name:'Urology',weight:12,color:'#06d6a0',topics:[
+        {id:'s_ur1',name:'UTI & Inflammation',w:1},{id:'s_ur2',name:'Uro-oncology',w:1},{id:'s_ur3',name:'Urology Trauma / Emergencies',w:1},{id:'s_ur4',name:'Urolithiasis',w:1},{id:'s_ur5',name:'Urinary Tract Obstruction',w:1},{id:'s_ur6',name:'BPH / LUTS',w:1},{id:'s_ur7',name:'Congenital Anomalies',w:1},{id:'s_ur8',name:'Benign Scrotal Conditions',w:1},{id:'s_ur9',name:'Male Infertility',w:1},{id:'s_ur10',name:'Erectile Dysfunction',w:1},{id:'s_ur11',name:'Neurogenic Bladder / Urinary Incontinence',w:1},{id:'s_ur12',name:'Renal Transplantation',w:1}]},
+      {id:'s_ct',name:'Cardiothoracic / Vascular Surgery',weight:6,color:'#f59e0b',topics:[{id:'s_cv1',name:'Arterial Disorders',w:1},{id:'s_cv2',name:'Venous Disorders',w:1},{id:'s_cv3',name:'Lymphatic Disorders',w:1},{id:'s_cv4',name:'Cardiothoracic Anatomy / Disorders',w:1},{id:'s_cv5',name:'Thoracic & Vascular Trauma',w:1},{id:'s_cv6',name:'Cardio-thoracic & Vascular Tumors',w:1}]},
+      {id:'s_rad',name:'Radiology',weight:6,color:'#ec4899',topics:[{id:'s_rd1',name:'Head & Neck Imaging',w:1},{id:'s_rd2',name:'Chest Imaging',w:1},{id:'s_rd3',name:'Abdomino-pelvic Imaging',w:1},{id:'s_rd4',name:'Urinary Tract Imaging',w:1},{id:'s_rd5',name:'Bones / Joints Imaging',w:1},{id:'s_rd6',name:'Vascular / Interventional Radiology',w:1}]},
+      {id:'s_neuro',name:'Neurosurgery',weight:3,color:'#14b8a6',topics:[{id:'s_ns1',name:'CNS Trauma / Intracranial Bleeding / GCS',w:1},{id:'s_ns2',name:'Hydrocephalus / Spina Bifida',w:0.5},{id:'s_ns3',name:'CNS Infections',w:0.5},{id:'s_ns4',name:'CNS Tumors',w:1}]},
+      {id:'s_anes',name:'Anesthesia',weight:3,color:'#8b5cf6',topics:[{id:'s_an1',name:'Types & Indications of Anesthesia',w:1},{id:'s_an2',name:'Complications of Anesthesia',w:1},{id:'s_an3',name:'Principles of Critical Care',w:1}]},
+      {id:'s_plastic',name:'Plastic & Reconstructive Surgery',weight:2,color:'#f97316',topics:[{id:'s_pl1',name:'Burns & Skin Grafts',w:1},{id:'s_pl2',name:'Skin Lesions / Bed Sores / Cleft Lip & Palate',w:1}]},
+      {id:'s_ent',name:'ENT',weight:2,color:'#a3e635',topics:[{id:'s_en1',name:'ENT Infections / Emergencies & Traumas',w:1},{id:'s_en2',name:'Audiology',w:1}]},
+      {id:'s_opth',name:'Ophthalmology',weight:1,color:'#5b8cff',topics:[{id:'s_op1',name:'Painful / Red Eye Disorders',w:0.5},{id:'s_op2',name:'Deterioration of Visual Acuity',w:0.5}]}
+    ]
+  },
+
+  medicine: {
+    id:'medicine', name:'Medicine', icon:'💊', color:'#06d6a0',
+    grad:'linear-gradient(135deg,#06d6a0,#0891b2)',
+    desc:'Internal Medicine — 108 Topics',
+    totalQ:100,
+    sections:[
+      {id:'m_cvs',name:'Cardiovascular (CVS)',weight:11,color:'#ef4444',topics:[
+        {id:'m_c1',name:'Cardiac Arrest & CPR',w:1.5},{id:'m_c2',name:'Hypertensive Emergency & Aortic Dissection',w:2},{id:'m_c3',name:'Acute Coronary Syndrome (STEMI, NSTEMI, UA)',w:2},{id:'m_c4',name:'Heart Failure & Acute Pulmonary Edema',w:1.5},{id:'m_c5',name:'Cardiac Tamponade & Pericardial Diseases',w:0.5},{id:'m_c6',name:'Atrial Fibrillation',w:1},{id:'m_c7',name:'Supraventricular Tachycardia',w:1},{id:'m_c8',name:'Rheumatic Fever, Valvular Disease & Infective Endocarditis',w:1.5},{id:'m_c9',name:'Congenital Heart Diseases (VSD, ASD, TOF, PDA)',w:0.5},{id:'m_c10',name:'Cardiomyopathy',w:0.5},{id:'m_c11',name:'Primary & Secondary Prevention of CVD',w:0.5}]},
+      {id:'m_resp',name:'Respiratory',weight:12,color:'#3b82f6',topics:[
+        {id:'m_r1',name:'Asthma & Allergic Bronchitis',w:1},{id:'m_r2',name:'Acute Upper Respiratory Tract Infection',w:1},{id:'m_r3',name:'Pneumonias (Lower Resp. Tract Infections)',w:1.5},{id:'m_r4',name:'Suppurative Lung Disease & Bronchiectasis',w:1},{id:'m_r5',name:'Pulmonary Tuberculosis',w:1.5},{id:'m_r6',name:'Respiratory Failure',w:0.5},{id:'m_r7',name:'Pleural Disease (Effusion + Pneumothorax)',w:0.5},{id:'m_r8',name:'Lung Cancer',w:1},{id:'m_r9',name:'Acute Pulmonary Embolism',w:1},{id:'m_r10',name:'Chronic Bronchitis & Emphysema',w:1.5},{id:'m_r11',name:'Interstitial Lung Diseases',w:0.5},{id:'m_r12',name:'ARDS',w:0.5}]},
+      {id:'m_git',name:'GIT & Hepatology',weight:13,color:'#f59e0b',topics:[
+        {id:'m_g1',name:'Oesophagitis & GERD',w:1},{id:'m_g2',name:'Gastritis & Peptic Ulcer',w:1.5},{id:'m_g3',name:'GIT Bleeding',w:1.5},{id:'m_g4',name:'Malabsorption',w:0.5},{id:'m_g5',name:'Chronic Inflammatory Bowel Disease',w:0.5},{id:'m_g6',name:'Irritable Bowel Syndrome',w:1},{id:'m_g7',name:'Viral Hepatitis & Acute Fulminant Hepatic Failure',w:1},{id:'m_g8',name:'Fatty Liver / NAFLD',w:0.5},{id:'m_g9',name:'Chronic Liver Disease, Cirrhosis & Portal Hypertension',w:1},{id:'m_g10',name:'Drug Induced Liver Disease',w:0.5},{id:'m_g11',name:'Acute & Chronic Pancreatitis',w:1},{id:'m_g12',name:'Autoimmune Hepatitis',w:0.5},{id:'m_g13',name:'Metabolic Liver Disease (Wilson, A1AT, Haemochromatosis)',w:0.5}]},
+      {id:'m_haem',name:'Haematology & Oncology',weight:16,color:'#8b5cf6',topics:[
+        {id:'m_h1',name:'Aplastic Anaemia',w:1},{id:'m_h2',name:'Anaemia of Chronic Disease',w:1},{id:'m_h3',name:'Iron Deficiency Anaemia',w:1},{id:'m_h4',name:'Autoimmune Haemolytic Anaemia',w:0.5},{id:'m_h5',name:'Haemoglobinopathies (Thalassaemia, SCD, G6PD)',w:1.5},{id:'m_h6',name:'Acute Leukaemia',w:1},{id:'m_h7',name:'Bleeding Disorders (Haemophilia, vWD, ITP)',w:1.5},{id:'m_h8',name:'Chronic Leukaemia',w:0.5},{id:'m_h9',name:'Megaloblastic Anaemia',w:1},{id:'m_h10',name:'Myelodysplastic Syndrome',w:0.5},{id:'m_h11',name:'Lymphomas (NHL & HL)',w:1},{id:'m_h12',name:'Bone Marrow Transplantation',w:0.5},{id:'m_h13',name:'Tumour Lysis Syndrome & Hypercalcaemia',w:0.5},{id:'m_h14',name:'Multiple Myeloma',w:0.5},{id:'m_h15',name:'Blood Transfusion & Complications',w:1},{id:'m_h16',name:'Polycythaemia & Essential Thrombocythaemia',w:0.5}]},
+      {id:'m_endo',name:'Endocrinology & Diabetes',weight:12,color:'#06d6a0',topics:[
+        {id:'m_e1',name:'Hyperthyroidism',w:1},{id:'m_e2',name:'Hypothyroidism & Thyroiditis',w:1.5},{id:'m_e3',name:'Pituitary Gland Disorders',w:1},{id:'m_e4',name:'Adrenal Insufficiency & Hyperfunction',w:1},{id:'m_e5',name:'Hyperparathyroidism & Hypoparathyroidism',w:0.5},{id:'m_e6',name:'Hyperlipidaemia',w:0.5},{id:'m_e7',name:'Diabetes Mellitus (Acute & Chronic Complications)',w:3},{id:'m_e8',name:'Osteoporosis, Osteomalacia & Vitamin D',w:1},{id:'m_e9',name:'Hypogonadism, Hirsutism & Male Infertility',w:0.5},{id:'m_e10',name:'Malnutrition, Obesity & Minerals',w:1.5}]},
+      {id:'m_neuro',name:'Neurology',weight:12,color:'#ec4899',topics:[
+        {id:'m_n1',name:'Disease of Cranial Nerves (1-12 CN Palsy)',w:1.5},{id:'m_n2',name:'Seizures & Status Epilepticus',w:1.5},{id:'m_n3',name:'Demyelinating Diseases (Multiple Sclerosis)',w:1},{id:'m_n4',name:'Cerebrovascular Accident (Ischaemic & Haemorrhagic)',w:2},{id:'m_n5',name:'Spinal Cord Diseases & Transverse Myelitis',w:0.5},{id:'m_n6',name:'Migraine, Headache & IIH',w:1.5},{id:'m_n7',name:'Infections of Nervous System (Meningitis & Encephalitis)',w:1.5},{id:'m_n8',name:'Peripheral Neuropathy (Diabetic & Post-infective)',w:1.5},{id:'m_n9',name:'Extrapyramidal Disorders (Parkinsonism)',w:1},{id:'m_n10',name:'Degenerative Diseases (Motor Neuron Disease)',w:0.5}]},
+      {id:'m_neph',name:'Nephrology',weight:10,color:'#0ea5e9',topics:[
+        {id:'m_k1',name:'Nephrotic Syndrome',w:1},{id:'m_k2',name:'Acute Renal Failure',w:1.5},{id:'m_k3',name:'Renal Dialysis & CAPD',w:1.5},{id:'m_k4',name:'Kidney Transplantation',w:0.5},{id:'m_k5',name:'Glomerulonephritis',w:1},{id:'m_k6',name:'Chronic Renal Failure',w:1},{id:'m_k7',name:'Electrolyte Disturbance, Water Balance & Blood Gas',w:1.5},{id:'m_k8',name:'Systemic Disease & the Kidney',w:1},{id:'m_k9',name:'Urinary Tract Infection',w:1.5},{id:'m_k10',name:'Drug Induced Nephropathy',w:0.5}]},
+      {id:'m_infect',name:'Infectious Diseases',weight:10,color:'#f97316',topics:[
+        {id:'m_i1',name:'Infectious Mononucleosis',w:1},{id:'m_i2',name:'Malaria, Leishmaniasis, Toxoplasmosis, Hydatid Cyst',w:1.5},{id:'m_i3',name:'Exanthematous Febrile Illness (Measles, Mumps, Herpes)',w:1.5},{id:'m_i4',name:'HIV Infection',w:1},{id:'m_i5',name:'Brucellosis & Salmonellosis',w:1.5},{id:'m_i6',name:'Food Poisoning & Acute Diarrhoeal Disease',w:1.5},{id:'m_i7',name:'Amoebiasis, Giardiasis & Helminthic Infection',w:1},{id:'m_i8',name:'Viral Haemorrhagic Fever',w:1},{id:'m_i9',name:'Tetanus, Rabies, Staph & Strep Infections',w:1.5},{id:'m_i10',name:'SIRS & Septic Shock',w:1.5},{id:'m_i11',name:'Fever of Unknown Origin',w:1}]},
+      {id:'m_rheum',name:'Rheumatology',weight:8,color:'#a3e635',topics:[
+        {id:'m_rh1',name:'Degenerative Arthritis, Spondylarthritis & OA',w:1},{id:'m_rh2',name:'Crystal Arthropathy (Gout)',w:1},{id:'m_rh3',name:'Metabolic Bone Diseases',w:1.5},{id:'m_rh4',name:'Rheumatoid Arthritis',w:1},{id:'m_rh5',name:'Systemic Lupus Erythematosus',w:1},{id:'m_rh6',name:'Scleroderma',w:1},{id:'m_rh7',name:'Vasculitis',w:0.5},{id:'m_rh8',name:'Dermatomyositis, Polymyositis & Behcet\'s',w:1},{id:'m_rh9',name:'Sjogren\'s Syndrome',w:0.5}]},
+      {id:'m_derm',name:'Dermatology',weight:2,color:'#fb923c',topics:[{id:'m_d1',name:'Psoriasis',w:1},{id:'m_d2',name:'Urticaria & Erythema',w:1},{id:'m_d3',name:'Sexually Transmitted Diseases',w:0.5}]},
+      {id:'m_psych',name:'Psychiatry',weight:2,color:'#c084fc',topics:[{id:'m_ps1',name:'Mood Disorders',w:0.5},{id:'m_ps2',name:'Schizophrenia',w:0.5},{id:'m_ps3',name:'Psychosomatic Disorders',w:0.5}]}
+    ]
+  },
+
+  pediatrics: {
+    id:'pediatrics', name:'Pediatrics', icon:'👶', color:'#f59e0b',
+    grad:'linear-gradient(135deg,#f59e0b,#ef4444)',
+    desc:'Paediatrics — 100 Questions',
+    totalQ:100,
+    sections:[
+      {id:'p_haem',name:'Haematology',weight:8,color:'#8b5cf6',topics:[
+        {id:'p_h1',name:'Anemias (IDA, G6PD, Thalassaemia, HS, SCD)',w:5},{id:'p_h2',name:'Bleeding Tendencies (ITP, Haemophilia, vWD)',w:2},{id:'p_h3',name:'Leukaemias & Bone Marrow Failure (Aplastic Anaemia)',w:1}]},
+      {id:'p_neo',name:'Neonatology',weight:10,color:'#ec4899',topics:[
+        {id:'p_n1',name:'Neonatal Care & APGAR Score',w:1},{id:'p_n2',name:'Neonatal Jaundice',w:3},{id:'p_n3',name:'Prematurity & RDS',w:2},{id:'p_n4',name:'Neonatal Sepsis',w:1},{id:'p_n5',name:'Birth Injury',w:1},{id:'p_n6',name:'Neonatal Convulsion',w:1},{id:'p_n7',name:'TORCH Infection',w:1}]},
+      {id:'p_git',name:'GIT',weight:13,color:'#f59e0b',topics:[
+        {id:'p_g1',name:'Infant Feeding',w:2},{id:'p_g2',name:'Acute Diarrhoea (Bloody & Non-bloody GE)',w:3},{id:'p_g3',name:'Dehydration & ORS',w:2},{id:'p_g4',name:'Persistent & Chronic Diarrhoea (Celiac, Post-infective)',w:2},{id:'p_g5',name:'Malnutrition / Failure to Thrive',w:2},{id:'p_g6',name:'Acute Hepatitis & Fulminant Hepatic Failure',w:1},{id:'p_g7',name:'Chronic Liver Disease',w:1}]},
+      {id:'p_cvs',name:'CVS',weight:7,color:'#ef4444',topics:[
+        {id:'p_c1',name:'Cyanotic CHD (TOF, TGA)',w:2},{id:'p_c2',name:'Acyanotic CHD (VSD, ASD, PDA)',w:2},{id:'p_c3',name:'Acquired Heart Diseases (RHD, Infective Endocarditis)',w:2},{id:'p_c4',name:'Heart Failure',w:1}]},
+      {id:'p_resp',name:'Respiratory',weight:9,color:'#3b82f6',topics:[
+        {id:'p_r1',name:'Asthma',w:2},{id:'p_r2',name:'Bronchiolitis',w:1},{id:'p_r3',name:'Pneumonia',w:2},{id:'p_r4',name:'URTI (Croup & Epiglottitis)',w:2},{id:'p_r5',name:'Recurrent RTI (CF & Bronchiectasis)',w:2}]},
+      {id:'p_infect',name:'Infectious Disease',weight:13,color:'#f97316',topics:[
+        {id:'p_i1',name:'Tuberculosis',w:1},{id:'p_i2',name:'Exanthema (Scarlet Fever, Measles, Mumps, Rubella, etc.)',w:5},{id:'p_i3',name:'Diphtheria',w:1},{id:'p_i4',name:'Pertussis',w:1},{id:'p_i5',name:'Tetanus',w:1},{id:'p_i6',name:'Kala Azar',w:1},{id:'p_i7',name:'Varicella',w:1},{id:'p_i8',name:'Infectious Mononucleosis',w:1},{id:'p_i9',name:'Pyrexia of Unknown Origin',w:1}]},
+      {id:'p_neph',name:'Nephrology',weight:8,color:'#0ea5e9',topics:[
+        {id:'p_k1',name:'Urinary Tract Infection',w:1},{id:'p_k2',name:'Acute Renal Failure',w:2},{id:'p_k3',name:'Nephrotic Syndrome',w:2},{id:'p_k4',name:'Glomerulonephritis & Hypertension',w:2},{id:'p_k5',name:'Haematuria & HUS',w:1}]},
+      {id:'p_cns',name:'CNS',weight:7,color:'#a855f7',topics:[
+        {id:'p_cn1',name:'CNS Infections (Meningitis, Encephalitis)',w:2},{id:'p_cn2',name:'Acute Paralysis',w:1},{id:'p_cn3',name:'Epilepsy / Seizures & Seizure Mimics',w:3},{id:'p_cn4',name:'Cerebral Palsy',w:1}]},
+      {id:'p_endo',name:'Endocrine',weight:8,color:'#06d6a0',topics:[
+        {id:'p_e1',name:'Rickets & Parathyroid Disease',w:2},{id:'p_e2',name:'Diabetes Mellitus',w:3},{id:'p_e3',name:'Thyroid Disease (Hypo & Hyperthyroidism)',w:1},{id:'p_e4',name:'Short Stature',w:2}]},
+      {id:'p_gen',name:'Genetics',weight:2,color:'#ec4899',topics:[{id:'p_gn1',name:'Down & Turner Syndromes',w:1},{id:'p_gn2',name:'Types of Inheritance',w:1}]},
+      {id:'p_rheum',name:'Rheumatology',weight:2,color:'#a3e635',topics:[{id:'p_rh1',name:'Vasculitis (HSP & Kawasaki)',w:1},{id:'p_rh2',name:'Connective Tissue Disease (JRA & SLE)',w:1}]},
+      {id:'p_immun',name:'Immunization',weight:3,color:'#14b8a6',topics:[{id:'p_im1',name:'Vaccination Schedule',w:2},{id:'p_im2',name:'Side Effects of Vaccine',w:1}]},
+      {id:'p_grow',name:'Growth & Development',weight:3,color:'#f97316',topics:[{id:'p_gd1',name:'Normal Growth Parameters',w:1},{id:'p_gd2',name:'Developmental Milestones',w:1},{id:'p_gd3',name:'Growth Disorders',w:1}]},
+      {id:'p_other',name:'Others & Emergencies',weight:7,color:'#ef4444',topics:[
+        {id:'p_ot1',name:'Paediatric Emergencies (Arrest, Anaphylaxis, Status E, FB, Shock)',w:3},{id:'p_ot2',name:'Poisoning (Kerosene, Corrosives, Aspirin, Iron, Paracetamol, OP)',w:1},{id:'p_ot3',name:'Child Abuse',w:1},{id:'p_ot4',name:'Autism',w:1},{id:'p_ot5',name:'Immunodeficiency',w:1}]}
+    ]
+  },
+
+  gynecology: {
+    id:'gynecology', name:'Gynecology & Obstetrics', icon:'🤱', color:'#ec4899',
+    grad:'linear-gradient(135deg,#ec4899,#8b5cf6)',
+    desc:'OB/GYN — 100 Questions (50+50)',
+    totalQ:100,
+    sections:[
+      // OBSTETRICS 50%
+      {id:'g_basic',name:'Basic Signs & Normal Pregnancy',weight:2,color:'#a3e635',topics:[
+        {id:'g_bs1',name:'Physiological Changes in Pregnancy',w:1},{id:'g_bs2',name:'Anatomy & Embryology',w:1}]},
+      {id:'g_mat',name:'Maternal Medicine',weight:19,color:'#ef4444',topics:[
+        {id:'g_m1',name:'Diabetes Mellitus in Pregnancy',w:3},{id:'g_m2',name:'Hypertensive Disorders in Pregnancy',w:4},{id:'g_m3',name:'Kidney Disease & UTI in Pregnancy',w:3},{id:'g_m4',name:'Heart Disease in Pregnancy',w:1},{id:'g_m5',name:'GIT Problems in Pregnancy',w:1},{id:'g_m6',name:'Bleeding Disorders in Pregnancy',w:2},{id:'g_m7',name:'Coagulation Disorders in Pregnancy',w:2},{id:'g_m8',name:'Anaemia in Pregnancy',w:3}]},
+      {id:'g_foetal',name:'Foetal Medicine',weight:7,color:'#f97316',topics:[
+        {id:'g_f1',name:'Rh Isoimmunisation',w:2},{id:'g_f2',name:'Congenital & Chromosomal Abnormalities',w:1},{id:'g_f3',name:'Intrauterine Infection',w:2},{id:'g_f4',name:'IUGR & IUFD',w:2}]},
+      {id:'g_labour',name:'Birth & Labour',weight:20,color:'#ec4899',topics:[
+        {id:'g_l1',name:'Labour',w:4},{id:'g_l2',name:'Abnormal Labour',w:2},{id:'g_l3',name:'APH',w:4},{id:'g_l4',name:'PPH',w:2},{id:'g_l5',name:'Malpresentation',w:1},{id:'g_l6',name:'Breech',w:2},{id:'g_l7',name:'Multiple Pregnancy',w:1},{id:'g_l8',name:'Fetal Heart Monitoring',w:1},{id:'g_l9',name:'Induction of Labour',w:1},{id:'g_l10',name:'Preterm Labour & PROM',w:1},{id:'g_l11',name:'Prolonged Pregnancy',w:1}]},
+      {id:'g_postnatal',name:'Postnatal Care',weight:2,color:'#14b8a6',topics:[{id:'g_pn1',name:'Puerperium',w:1},{id:'g_pn2',name:'Neonatal Care',w:1}]},
+      // GYNAECOLOGY 50%
+      {id:'g_gbasic',name:'Gynaecology Basic Science',weight:2,color:'#8b5cf6',topics:[{id:'g_gb1',name:'Physiology of Female Reproductive Tract & Menstrual Cycle',w:1},{id:'g_gb2',name:'Anatomy',w:1}]},
+      {id:'g_intersex',name:'Intersex & Primary Amenorrhoea',weight:6,color:'#f59e0b',topics:[{id:'g_ia1',name:'Intersex',w:2},{id:'g_ia2',name:'Genital Tract Congenital Abnormalities',w:2},{id:'g_ia3',name:'Primary Amenorrhoea',w:2}]},
+      {id:'g_early',name:'Early Pregnancy Problems',weight:9,color:'#ef4444',topics:[{id:'g_ep1',name:'Ectopic Pregnancy',w:3},{id:'g_ep2',name:'Miscarriage',w:4},{id:'g_ep3',name:'Gestational Trophoblastic Disease',w:2}]},
+      {id:'g_mens',name:'Menstruation & Hormones',weight:12,color:'#ec4899',topics:[
+        {id:'g_mn1',name:'Puberty',w:1},{id:'g_mn2',name:'Abnormal Uterine Bleeding',w:2},{id:'g_mn3',name:'Secondary Amenorrhoea',w:1},{id:'g_mn4',name:'Endometriosis & Adenomyosis',w:2},{id:'g_mn5',name:'Contraception',w:2},{id:'g_mn6',name:'PCOS, Hirsutism & Virilisation',w:2},{id:'g_mn7',name:'Menopause & Postmenopausal Bleeding',w:2}]},
+      {id:'g_uro',name:'Urogynecology',weight:2,color:'#0ea5e9',topics:[{id:'g_ug1',name:'Urinary Incontinence',w:1},{id:'g_ug2',name:'Pelvic Organ Prolapse',w:1}]},
+      {id:'g_benign',name:'Benign Conditions of Genital Tract',weight:10,color:'#a3e635',topics:[
+        {id:'g_bc1',name:'Infection in Gynaecology / Genital Tract Infection',w:2},{id:'g_bc2',name:'Fibroid',w:2},{id:'g_bc3',name:'Vulval & Vaginal Benign & Premalignant Conditions',w:1},{id:'g_bc4',name:'Precancerous Cervical Lesions',w:2},{id:'g_bc5',name:'Benign Ovarian Lesion',w:2},{id:'g_bc6',name:'Endometrial Hyperplasia',w:1}]},
+      {id:'g_malig',name:'Malignant Conditions of Genital Tract',weight:7,color:'#ef4444',topics:[
+        {id:'g_mc1',name:'Ovarian Malignancy',w:2},{id:'g_mc2',name:'Uterine Malignancy',w:2},{id:'g_mc3',name:'Cervical Malignancy',w:2},{id:'g_mc4',name:'Vulval & Vaginal Malignancy',w:1}]},
+      {id:'g_infert',name:'Infertility',weight:2,color:'#8b5cf6',topics:[{id:'g_if1',name:'Female Infertility (Investigation & Treatment)',w:1},{id:'g_if2',name:'Male Infertility',w:1}]}
+    ]
+  }
+};
+
+/* ============================================================
+   MOTIVATIONAL QUOTES
+   ============================================================ */
+const QUOTES = [
+  {text:"The secret of getting ahead is getting started.",author:"Mark Twain"},
+  {text:"Success is the sum of small efforts, repeated day in and day out.",author:"Robert Collier"},
+  {text:"The expert in anything was once a beginner.",author:"Helen Hayes"},
+  {text:"Push yourself, because no one else is going to do it for you.",author:"Unknown"},
+  {text:"Great things never came from comfort zones.",author:"Unknown"},
+  {text:"It always seems impossible until it's done.",author:"Nelson Mandela"},
+  {text:"Believe you can and you're halfway there.",author:"Theodore Roosevelt"},
+  {text:"Don't watch the clock; do what it does. Keep going.",author:"Sam Levenson"},
+];
+
+/* ============================================================
+   STATE — per-subject, keyed by subject ID
+   ============================================================ */
+let currentSubject = null; // 'surgery' | 'medicine' | 'pediatrics' | 'gynecology'
+
+// Returns the state object for the current subject
+function getSubjectState(subjectId) {
+  var sid = subjectId || currentSubject;
+  if(!sid) return null;
+  if(!appState[sid]) {
+    appState[sid] = {
+      completed:{}, priority:{}, examDate:null,
+      filter:'all', search:'', sortOrder:'default',
+      daysMode:'auto', customDays:14, prioMode:'exam',
+      planInclude:'remaining', lastPlan:null, customSections:[]
+    };
+  }
+  return appState[sid];
+}
+
+var appState = {}; // { surgery: {...}, medicine: {...}, ... }
+
+// Shorthand: state = current subject's state
+var state = {};
+function syncState() {
+  if(currentSubject) state = getSubjectState(currentSubject);
+}
+
+/* ============================================================
+   FIREBASE
+   ============================================================ */
+let _db = null;
+let _firebaseReady = false;
+
+function initFirebase(){
+  if(_firebaseReady) return Promise.resolve(_db);
+  return new Promise(function(resolve, reject){
+    if(typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length){
+      _db = firebase.firestore(); _firebaseReady = true; resolve(_db); return;
+    }
+    function loadScript(src, cb){
+      var s = document.createElement('script'); s.src = src;
+      s.onload = cb; s.onerror = function(){ reject(new Error('Firebase load failed')); };
+      document.head.appendChild(s);
+    }
+    loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js', function(){
+      loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js', function(){
+        try{
+          if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+          _db = firebase.firestore(); _firebaseReady = true; resolve(_db);
+        } catch(e){ reject(e); }
+      });
+    });
+  });
+}
+function hashPass(pass){
+  var h = 5381;
+  for(var i=0;i<pass.length;i++){ h=((h<<5)+h)^pass.charCodeAt(i); h=h>>>0; }
+  return h.toString(16).padStart(8,'0');
+}
+function getSession(){ return localStorage.getItem('surgeonprep_session')||null; }
+function setSession(u){ localStorage.setItem('surgeonprep_session',u); }
+function clearSession(){ localStorage.removeItem('surgeonprep_session'); }
+function dbGetUser(username){ return initFirebase().then(function(db){ return db.collection('surgeonprep_users').doc(username).get(); }); }
+function dbSetUser(username, data){ return initFirebase().then(function(db){ return db.collection('surgeonprep_users').doc(username).set(data,{merge:true}); }); }
+
+/* ============================================================
+   SAVE STATE
+   ============================================================ */
+function saveState(){
+  // Save current subject state
+  if(currentSubject) appState[currentSubject] = Object.assign({}, state);
+  localStorage.setItem('surgeonprep_appstate', JSON.stringify(appState));
+  var session = getSession();
+  if(session) dbSetUser(session, {appState: Object.assign({},appState)}).catch(function(){});
+}
+
+/* ============================================================
+   SUBJECT SELECTOR
+   ============================================================ */
+function renderSubjectSelector(){
+  var container = document.getElementById('subject-cards-container');
+  container.innerHTML = '';
+  var subjects = ['surgery','medicine','pediatrics','gynecology'];
+  subjects.forEach(function(sid){
+    var sub = SUBJECTS[sid];
+    var subState = getSubjectState(sid);
+    var total = 0, done = 0;
+    sub.sections.forEach(function(sec){
+      sec.topics.forEach(function(t){ total++; if(subState.completed[t.id]) done++; });
+    });
+    // Also count custom sections
+    (subState.customSections||[]).forEach(function(sec){
+      sec.topics.forEach(function(t){ total++; if(subState.completed[t.id]) done++; });
+    });
+    var pct = total ? Math.round(done/total*100) : 0;
+
+    var card = document.createElement('div');
+    card.className = 'subject-card';
+    card.style.setProperty('--sc-color', sub.color);
+    card.style.setProperty('--sc-grad', sub.grad);
+    card.innerHTML =
+      '<div class="subject-card-icon">'+sub.icon+'</div>'+
+      '<div class="subject-card-name">'+sub.name+'</div>'+
+      '<div class="subject-card-desc">'+sub.desc+'</div>'+
+      '<div class="subject-card-badge">'+sub.totalQ+' Questions</div>'+
+      '<div class="subject-card-progress">'+
+        '<div class="subject-prog-bar"><div class="subject-prog-fill" style="width:'+pct+'%;background:'+sub.color+';"></div></div>'+
+        '<div class="subject-prog-label">'+done+' / '+total+' topics completed ('+pct+'%)</div>'+
+      '</div>';
+    card.addEventListener('click', function(){ selectSubject(sid); });
+    container.appendChild(card);
+  });
+}
+
+function openSubjectSelector(){
+  renderSubjectSelector();
+  document.getElementById('subject-selector').classList.remove('hidden');
+  document.getElementById('subject-bar').classList.remove('show');
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('main-nav').style.display = 'none';
+}
+
+function selectSubject(sid){
+  currentSubject = sid;
+  syncState();
+  localStorage.setItem('surgeonprep_subject', sid);
+
+  var sub = SUBJECTS[sid];
+  document.getElementById('subject-selector').classList.add('hidden');
+
+  // Update subject bar
+  document.getElementById('sb-icon').textContent = sub.icon;
+  document.getElementById('sb-name').textContent = sub.name;
+  document.getElementById('subject-bar').classList.add('show');
+
+  document.getElementById('main-content').style.display = 'block';
+  document.getElementById('main-nav').style.display = 'flex';
+
+  // Restore UI state for this subject
+  restoreSubjectUI();
+  renderAll();
+  setMotivational();
+  updateSuggestBanner();
+
+  if(state.lastPlan && state.lastPlan.days && state.lastPlan.days.length){
+    renderPlanFromData(state.lastPlan);
+  } else {
+    showRecentPlanBanner();
+  }
+
+  // Switch to dashboard
+  var tabs = document.querySelectorAll('.nav-tab');
+  tabs.forEach(function(t){ t.classList.remove('active'); });
+  tabs[0].classList.add('active');
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('panel-dashboard').classList.add('active');
+}
+
+function restoreSubjectUI(){
+  if(!state) return;
+  if(state.examDate) document.getElementById('exam-date-input').value = state.examDate;
+  else document.getElementById('exam-date-input').value = '';
+  if(state.daysMode==='custom'){ setDaysMode('custom'); document.getElementById('days-slider').value=state.customDays||14; document.getElementById('days-slider-val').textContent=(state.customDays||14)+' days'; }
+  else{ setDaysMode('auto'); }
+  if(state.prioMode) setPrioMode(state.prioMode);
+  if(state.sortOrder){ setSortOrder(state.sortOrder); }
+  if(state.planInclude){ document.querySelectorAll('input[name="incl"]').forEach(function(r){ r.checked=(r.value===state.planInclude); }); }
+}
+
+/* ============================================================
+   getAllSections — built-in + custom for current subject
+   ============================================================ */
+function getAllSections(){
+  if(!currentSubject) return [];
+  var sub = SUBJECTS[currentSubject];
+  return sub.sections.concat(state.customSections||[]);
+}
+
+/* ============================================================
+   TOTALS
+   ============================================================ */
+function getTotals(){
+  var total=0, done=0;
+  getAllSections().forEach(function(s){ s.topics.forEach(function(t){ total++; if(state.completed[t.id]) done++; }); });
+  return {total:total, done:done, remain:total-done};
+}
+
+function updateOverallProgress(){
+  var r = getTotals();
+  var pct = r.total ? Math.round(r.done/r.total*100) : 0;
+  document.getElementById('overall-pct').textContent = pct+'%';
+  document.getElementById('overall-bar').style.width = pct+'%';
+  document.getElementById('done-count').textContent = r.done;
+  document.getElementById('remain-count').textContent = r.remain;
+  document.getElementById('total-count').textContent = r.total;
+  document.getElementById('stat-done').textContent = r.done;
+  document.getElementById('stat-done-sub').textContent = 'of '+r.total+' topics';
+}
+
+/* ============================================================
+   SECTION PROGRESS
+   ============================================================ */
+function renderSectionProgress(){
+  var el = document.getElementById('section-progress-list');
+  el.innerHTML = '';
+  getAllSections().forEach(function(sec){
+    var total=sec.topics.length, done=sec.topics.filter(function(t){ return state.completed[t.id]; }).length;
+    var pct = total ? Math.round(done/total*100) : 0;
+    el.innerHTML += '<div style="margin-bottom:12px;"><div class="flex-between" style="margin-bottom:5px;"><div class="flex gap-2"><span style="width:9px;height:9px;border-radius:50%;background:'+sec.color+';display:inline-block;margin-top:5px;flex-shrink:0;"></span><span style="font-size:0.83rem;font-weight:500;color:var(--text);">'+sec.name+'</span></div><span class="text-sm text-muted">'+done+'/'+total+' <b style="color:var(--text);">'+pct+'%</b></span></div><div class="progress-track"><div class="progress-fill" style="width:'+pct+'%;background:'+sec.color+';"></div></div></div>';
+  });
+}
+
+/* ============================================================
+   STATS
+   ============================================================ */
+function updateStats(){
+  var highRemain=0;
+  getAllSections().forEach(function(s){ s.topics.forEach(function(t){ if(state.priority[t.id]==='high'&&!state.completed[t.id]) highRemain++; }); });
+  document.getElementById('stat-high').textContent = highRemain;
+  var days = getDaysLeft();
+  document.getElementById('stat-days-left').textContent = days!==null?days:'—';
+  var remain = getTotals().remain;
+  if(days!==null&&days>0){
+    document.getElementById('stat-daily').textContent = Math.ceil(remain/days);
+    document.getElementById('stat-daily-sub').textContent = 'topics/day ('+remain+' left)';
+  } else {
+    document.getElementById('stat-daily').textContent = '—';
+    document.getElementById('stat-daily-sub').textContent = 'set exam date first';
+  }
+}
+
+/* ============================================================
+   COUNTDOWN
+   ============================================================ */
+function getDaysLeft(){
+  if(!state.examDate) return null;
+  var now=new Date(), exam=new Date(state.examDate+'T23:59:59'), diff=exam-now;
+  if(diff<=0) return 0;
+  return Math.ceil(diff/(1000*60*60*24));
+}
+function updateCountdown(){
+  if(!state||!state.examDate){ ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(function(id){ document.getElementById(id).textContent='—'; }); return; }
+  var now=new Date(), exam=new Date(state.examDate+'T23:59:59'), diff=exam-now;
+  if(diff<=0){ ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(function(id){ document.getElementById(id).textContent='0'; }); return; }
+  var days=Math.floor(diff/(1000*60*60*24)), hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60)), mins=Math.floor((diff%(1000*60*60))/(1000*60)), secs=Math.floor((diff%(1000*60))/1000);
+  document.getElementById('cd-days').textContent=days;
+  document.getElementById('cd-hours').textContent=String(hours).padStart(2,'0');
+  document.getElementById('cd-mins').textContent=String(mins).padStart(2,'0');
+  document.getElementById('cd-secs').textContent=String(secs).padStart(2,'0');
+  document.getElementById('stat-days-left').textContent=days;
+}
+function saveExamDate(){
+  if(isGuest()){ showGuestBlock(); document.getElementById('exam-date-input').value=''; return; }
+  state.examDate = document.getElementById('exam-date-input').value;
+  saveState(); updateCountdown(); updateStats(); updateSuggestBanner();
+  showToast('📅 Exam date saved!','accent');
+}
+
+/* ============================================================
+   RENDER TOPICS
+   ============================================================ */
+var _allCollapsed = false;
+function renderTopics(){
+  var container = document.getElementById('topics-container');
+  container.innerHTML = '';
+  var searchVal = (state.search||'').toLowerCase();
+  var filter = state.filter;
+  var builtIn = SUBJECTS[currentSubject].sections.slice();
+  if(state.sortOrder==='high') builtIn.sort(function(a,b){ return b.weight-a.weight; });
+  else if(state.sortOrder==='low') builtIn.sort(function(a,b){ return a.weight-b.weight; });
+  var sections = builtIn.concat(state.customSections||[]);
+
+  sections.forEach(function(sec){
+    var topics = sec.topics.filter(function(t){
+      if(searchVal&&!t.name.toLowerCase().includes(searchVal)) return false;
+      if(filter==='completed'&&!state.completed[t.id]) return false;
+      if(filter==='incomplete'&&state.completed[t.id]) return false;
+      if(filter==='high'&&state.priority[t.id]!=='high') return false;
+      if(filter==='med'&&state.priority[t.id]!=='med') return false;
+      if(filter==='low'&&state.priority[t.id]!=='low') return false;
+      return true;
+    });
+    if(!topics.length) return;
+    var total=sec.topics.length, done=sec.topics.filter(function(t){ return state.completed[t.id]; }).length;
+    var pct=total?Math.round(done/total*100):0;
+    var isCustom=!!sec.custom;
+    var isSorted=state.sortOrder!=='default';
+    var weightBadge = isSorted
+      ? '<div style="font-size:0.7rem;font-weight:700;color:'+sec.color+';background:'+sec.color+'18;padding:2px 9px;border-radius:12px;border:1px solid '+sec.color+'40;">'+sec.weight+'% exam</div>'
+      : '<div class="section-weight">'+sec.weight+'%</div>';
+    var customBadge = isCustom ? '<div class="custom-sec-badge">✏️ Custom</div>' : '';
+
+    var block = document.createElement('div');
+    block.className = 'section-block open'+(isCustom?' custom-section':'');
+
+    block.innerHTML =
+      '<div class="section-header" onclick="toggleSection(this)">'+
+        '<div class="section-color-dot" style="background:'+sec.color+';"></div>'+
+        '<div class="section-name">'+sec.name+'</div>'+
+        customBadge+weightBadge+
+        '<div class="section-topic-count" id="tc-'+sec.id+'" style="display:flex;align-items:center;gap:4px;background:'+sec.color+'15;border:1px solid '+sec.color+'35;border-radius:20px;padding:2px 9px;font-size:0.71rem;font-weight:700;color:'+sec.color+';">'+
+          '<span style="font-size:0.68rem;opacity:0.75;">✅</span>'+
+          '<span id="tc-remain-'+sec.id+'">'+done+'</span>'+
+          '<span style="opacity:0.55;font-weight:400;">/ '+total+'</span>'+
+        '</div>'+
+        '<div class="section-pct-badge" style="background:'+sec.color+'20;color:'+sec.color+';">'+pct+'%</div>'+
+        (isCustom ? '<span id="csa-'+sec.id+'"></span>' : '')+
+        '<div class="section-chevron">▼</div>'+
+      '</div>'+
+      '<div class="section-progress-bar"><div class="section-progress-fill" style="width:'+pct+'%;background:'+sec.color+';"></div></div>'+
+      '<div class="topics-list">'+topics.map(topicItemHTML).join('')+'</div>'+
+      '<div class="section-mark-all" onclick="toggleAllSection(\''+sec.id+'\')">'+
+        '<span class="mark-all-check" id="ma-icon-'+sec.id+'">'+(done===total?'☑':'☐')+'</span>'+
+        '<span id="ma-label-'+sec.id+'">'+(done===total?'All completed — click to uncheck all':'Mark all as completed')+'</span>'+
+      '</div>';
+
+    container.appendChild(block);
+
+    if(isCustom){
+      var placeholder = block.querySelector('#csa-'+sec.id);
+      if(placeholder){
+        var editBtn = document.createElement('button');
+        editBtn.className='custom-sec-edit'; editBtn.title='Edit'; editBtn.textContent='✏️';
+        editBtn.addEventListener('click',(function(id){ return function(e){ e.stopPropagation(); openEditSectionModal(id); }; })(sec.id));
+        var delBtn = document.createElement('button');
+        delBtn.className='custom-sec-del'; delBtn.title='Delete'; delBtn.textContent='🗑';
+        delBtn.addEventListener('click',(function(id,nm){ return function(e){ e.stopPropagation(); doDeleteCustomSection(id,nm); }; })(sec.id,sec.name));
+        placeholder.replaceWith(editBtn);
+        editBtn.insertAdjacentElement('afterend',delBtn);
+      }
+    }
+  });
+
+  if(!container.children.length){
+    container.innerHTML='<div class="no-data"><div class="big">🔍</div>No topics match your filter.</div>';
+  }
+}
+
+function topicItemHTML(t){
+  var done=!!state.completed[t.id], prio=state.priority[t.id]||'';
+  var prioLabel=prio?{high:'🔴 High',med:'🟡 Med',low:'🟢 Low'}[prio]:'⚪ Priority';
+  return '<div class="topic-item'+(done?' completed':'')+'" id="ti-'+t.id+'">'+'<div class="topic-checkbox" onclick="toggleTopic(\''+t.id+'\')">'+(done?'✓':'')+'</div>'+'<div class="topic-name" onclick="toggleTopic(\''+t.id+'\')">'+t.name+'</div>'+'<button class="priority-btn '+prio+'" onclick="cyclePriority(event,\''+t.id+'\')">'+prioLabel+'</button>'+'</div>';
+}
+
+function toggleSection(header){
+  var block=header.closest('.section-block');
+  block.classList.toggle('open');
+  var isOpen=block.classList.contains('open');
+  var list=block.querySelector('.topics-list'), markAll=block.querySelector('.section-mark-all');
+  if(list) list.style.display=isOpen?'':'none';
+  if(markAll) markAll.style.display=isOpen?'':'none';
+  var chev=block.querySelector('.section-chevron');
+  if(chev) chev.style.transform=isOpen?'':'rotate(0deg)';
+  _allCollapsed=false;
+  var btn=document.getElementById('collapse-all-btn');
+  if(btn){ var ic=btn.querySelector('#collapse-all-icon'); if(ic) ic.textContent='⊖'; btn.lastChild.textContent=' Collapse All'; }
+}
+
+function toggleAllSections(){
+  _allCollapsed=!_allCollapsed;
+  document.querySelectorAll('#topics-container .section-block').forEach(function(block){
+    var list=block.querySelector('.topics-list'), markAll=block.querySelector('.section-mark-all'), chev=block.querySelector('.section-chevron');
+    block.classList.toggle('open',!_allCollapsed);
+    if(list) list.style.display=_allCollapsed?'none':'';
+    if(markAll) markAll.style.display=_allCollapsed?'none':'';
+    if(chev) chev.style.transform=_allCollapsed?'rotate(0deg)':'rotate(180deg)';
+  });
+  var btn=document.getElementById('collapse-all-btn');
+  if(btn){
+    var ic=btn.querySelector('#collapse-all-icon');
+    if(ic) ic.textContent=_allCollapsed?'⊕':'⊖';
+    btn.lastChild.textContent=_allCollapsed?' Expand All':' Collapse All';
+  }
+}
+
+function toggleTopic(id){
+  if(isGuest()){ showGuestBlock(); return; }
+  state.completed[id]=!state.completed[id];
+  saveState();
+  var done=state.completed[id];
+  var item=document.getElementById('ti-'+id);
+  if(item){ item.classList.toggle('completed',done); item.querySelector('.topic-checkbox').textContent=done?'✓':''; }
+  var sec=getAllSections().find(function(s){ return s.topics.some(function(t){ return t.id===id; }); });
+  if(sec){
+    var secDone=sec.topics.filter(function(t){ return state.completed[t.id]; }).length;
+    var remEl=document.getElementById('tc-remain-'+sec.id);
+    if(remEl){ remEl.textContent=secDone; remEl.parentElement.style.transform='scale(1.15)'; setTimeout(function(){ if(remEl.parentElement) remEl.parentElement.style.transform='scale(1)'; },200); }
+    var block=remEl&&remEl.closest('.section-block');
+    if(block){
+      var pct=Math.round(secDone/sec.topics.length*100);
+      var fill=block.querySelector('.section-progress-fill'); if(fill) fill.style.width=pct+'%';
+      var badge=block.querySelector('.section-pct-badge'); if(badge) badge.textContent=pct+'%';
+    }
+  }
+  updateOverallProgress(); renderSectionProgress(); updateStats(); checkMilestone();
+}
+
+function cyclePriority(e,id){
+  e.stopPropagation();
+  if(isGuest()){ showGuestBlock(); return; }
+  var cur=state.priority[id]||'';
+  var next={'':"high",high:'med',med:'low',low:''}[cur];
+  if(!next) delete state.priority[id]; else state.priority[id]=next;
+  saveState(); renderTopics(); updateStats();
+}
+
+function toggleAllSection(secId){
+  if(isGuest()){ showGuestBlock(); return; }
+  var sec=getAllSections().find(function(s){ return s.id===secId; });
+  if(!sec) return;
+  var allDone=sec.topics.every(function(t){ return state.completed[t.id]; });
+  sec.topics.forEach(function(t){ state.completed[t.id]=!allDone; });
+  saveState();
+  sec.topics.forEach(function(t){
+    var item=document.getElementById('ti-'+t.id);
+    if(item){ item.classList.toggle('completed',!allDone); item.querySelector('.topic-checkbox').textContent=!allDone?'✓':''; }
+  });
+  var secDone=allDone?0:sec.topics.length;
+  var remEl=document.getElementById('tc-remain-'+secId);
+  if(remEl){ remEl.textContent=secDone; remEl.parentElement.style.transform='scale(1.15)'; setTimeout(function(){ if(remEl.parentElement) remEl.parentElement.style.transform='scale(1)'; },220); }
+  var iconEl=document.getElementById('ma-icon-'+secId), labelEl=document.getElementById('ma-label-'+secId);
+  if(iconEl) iconEl.textContent=allDone?'☐':'☑';
+  if(labelEl) labelEl.textContent=allDone?'Mark all as completed':'All completed — click to uncheck all';
+  var block=remEl&&remEl.closest('.section-block');
+  if(block){
+    var pct=allDone?0:100;
+    var fill=block.querySelector('.section-progress-fill'); if(fill) fill.style.width=pct+'%';
+    var badge=block.querySelector('.section-pct-badge'); if(badge) badge.textContent=pct+'%';
+  }
+  updateOverallProgress(); renderSectionProgress(); updateStats(); checkMilestone();
+  showToast(allDone?'↩️ '+sec.name+' unchecked':'✅ '+sec.name+' completed!',allDone?'warning':'success');
+}
+
+/* ============================================================
+   FILTER / SORT
+   ============================================================ */
+function setFilter(el,f){ state.filter=f; document.querySelectorAll('.filter-chip').forEach(function(c){ c.classList.remove('active'); }); el.classList.add('active'); renderTopics(); }
+function filterTopics(){ state.search=document.getElementById('search-input').value; renderTopics(); }
+function setSortOrder(order){
+  state.sortOrder=order; saveState();
+  ['default','high','low'].forEach(function(o){ document.getElementById('sort-'+o).classList.toggle('active',o===order); });
+  renderTopics();
+}
+
+/* ============================================================
+   CUSTOM SECTIONS
+   ============================================================ */
+var _editingSectionId = null;
+var _topicRowCounter  = 0;
+
+function openNewSectionModal(){
+  if(isGuest()){ showGuestBlock(); return; }
+  _editingSectionId=null;
+  var els=['section-modal-title','section-modal-save-btn','sm-name','sm-weight','sm-topics-list','section-modal-error'];
+  var vals=['New Section','Save Section','','','',''];
+  els.forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(!el) return;
+    if(i<2) el.textContent=vals[i]; else if(i<5) el.value=vals[i]||''; else el.classList.remove('show');
+    if(id==='sm-topics-list') el.innerHTML='';
+  });
+  var colorEl=document.getElementById('sm-color'); if(colorEl) colorEl.value='#5b8cff';
+  document.getElementById('section-modal-error').classList.remove('show');
+  addTopicRow('');
+  document.getElementById('section-modal-overlay').classList.remove('hidden');
+  setTimeout(function(){ var n=document.getElementById('sm-name'); if(n) n.focus(); },150);
+}
+function openEditSectionModal(secId){
+  var sec=(state.customSections||[]).find(function(s){ return s.id===secId; });
+  if(!sec) return;
+  _editingSectionId=secId;
+  document.getElementById('section-modal-title').textContent='Edit Section';
+  document.getElementById('section-modal-save-btn').textContent='Update Section';
+  document.getElementById('sm-name').value=sec.name;
+  document.getElementById('sm-weight').value=sec.weight||0;
+  document.getElementById('sm-color').value=sec.color||'#5b8cff';
+  document.getElementById('section-modal-error').classList.remove('show');
+  document.getElementById('sm-topics-list').innerHTML='';
+  (sec.topics||[]).forEach(function(t){ addTopicRow(t.name); });
+  document.getElementById('section-modal-overlay').classList.remove('hidden');
+}
+function closeSectionModal(){ document.getElementById('section-modal-overlay').classList.add('hidden'); _editingSectionId=null; }
+function addTopicRow(value){
+  if(value===undefined) value='';
+  _topicRowCounter++;
+  var list=document.getElementById('sm-topics-list'); if(!list) return;
+  var row=document.createElement('div'); row.className='sm-topic-row';
+  var inp=document.createElement('input'); inp.type='text'; inp.className='sm-topic-input'; inp.placeholder='Topic name...'; inp.maxLength=120; inp.value=value;
+  var del=document.createElement('button'); del.type='button'; del.className='sm-topic-del'; del.textContent='✕'; del.title='Remove';
+  del.onclick=function(){ row.remove(); };
+  row.appendChild(inp); row.appendChild(del); list.appendChild(row);
+  if(!value) inp.focus();
+}
+function saveCustomSection(){
+  var name=document.getElementById('sm-name').value.trim();
+  var weight=parseFloat(document.getElementById('sm-weight').value)||0;
+  var color=document.getElementById('sm-color').value||'#5b8cff';
+  var errEl=document.getElementById('section-modal-error');
+  if(!name){ errEl.textContent='Section name is required.'; errEl.classList.add('show'); return; }
+  var inputs=document.querySelectorAll('#sm-topics-list .sm-topic-input');
+  var topics=[];
+  inputs.forEach(function(inp,i){
+    var tname=inp.value.trim();
+    if(tname) topics.push({id:(_editingSectionId||'cs_'+Date.now())+'_t'+i+'_'+Math.random().toString(36).slice(2,6),name:tname,w:1});
+  });
+  if(!topics.length){ errEl.textContent='Add at least one topic.'; errEl.classList.add('show'); return; }
+  if(!state.customSections) state.customSections=[];
+  if(_editingSectionId){
+    var existing=state.customSections.find(function(s){ return s.id===_editingSectionId; });
+    var emap={}; (existing&&existing.topics||[]).forEach(function(t){ emap[t.name]=t.id; });
+    var updated=topics.map(function(t){ return Object.assign({},t,{id:emap[t.name]||t.id}); });
+    var idx=state.customSections.findIndex(function(s){ return s.id===_editingSectionId; });
+    state.customSections[idx]={id:_editingSectionId,name:name,weight:weight,color:color,topics:updated,custom:true};
+    showToast('✏️ "'+name+'" updated!','success');
+  } else {
+    var secId='cs_'+Date.now().toString(36);
+    var finalTopics=topics.map(function(t,i){ return Object.assign({},t,{id:secId+'_t'+i}); });
+    state.customSections.push({id:secId,name:name,weight:weight,color:color,topics:finalTopics,custom:true});
+    showToast('✅ "'+name+'" created!','success');
+  }
+  saveState(); closeSectionModal(); renderAll();
+}
+function doDeleteCustomSection(secId,secName){
+  var tc=document.getElementById('toast-container');
+  var ex=document.getElementById('delete-confirm-toast'); if(ex) ex.remove();
+  var toast=document.createElement('div'); toast.className='toast'; toast.id='delete-confirm-toast';
+  toast.style.borderLeft='3px solid var(--high)'; toast.style.flexDirection='column'; toast.style.gap='9px'; toast.style.alignItems='flex-start'; toast.style.maxWidth='300px';
+  var msg=document.createElement('div'); msg.style.fontSize='0.83rem'; msg.style.color='var(--text)'; msg.textContent='Delete "'+secName+'"?';
+  var btns=document.createElement('div'); btns.style.display='flex'; btns.style.gap='7px';
+  var cb=document.createElement('button'); cb.textContent='🗑 Delete'; cb.style.cssText='background:var(--high);color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;';
+  cb.addEventListener('click',function(){ toast.remove(); deleteCustomSection(secId); });
+  var xb=document.createElement('button'); xb.textContent='Cancel'; xb.style.cssText='background:var(--bg3);color:var(--text2);border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:0.76rem;font-weight:600;cursor:pointer;font-family:inherit;';
+  xb.addEventListener('click',function(){ toast.remove(); });
+  btns.appendChild(cb); btns.appendChild(xb); toast.appendChild(msg); toast.appendChild(btns); tc.appendChild(toast);
+  setTimeout(function(){ if(toast.parentNode) toast.remove(); },6000);
+}
+function deleteCustomSection(secId){
+  state.customSections=(state.customSections||[]).filter(function(s){ return s.id!==secId; });
+  var allIds=[]; getAllSections().forEach(function(s){ s.topics.forEach(function(t){ allIds.push(t.id); }); });
+  Object.keys(state.completed).forEach(function(k){ if(allIds.indexOf(k)===-1) delete state.completed[k]; });
+  Object.keys(state.priority).forEach(function(k){ if(allIds.indexOf(k)===-1) delete state.priority[k]; });
+  saveState(); renderAll(); showToast('🗑 Section deleted.','warning');
+}
+
+/* ============================================================
+   PLANNER
+   ============================================================ */
+function setDaysMode(mode){
+  state.daysMode=mode; saveState();
+  document.getElementById('dmode-auto').classList.toggle('active',mode==='auto');
+  document.getElementById('dmode-custom').classList.toggle('active',mode==='custom');
+  document.getElementById('custom-days-wrap').style.display=mode==='custom'?'block':'none';
+  updateSuggestBanner();
+}
+function updateDaysSlider(){
+  var v=parseInt(document.getElementById('days-slider').value);
+  state.customDays=v; saveState();
+  document.getElementById('days-slider-val').textContent=v+' day'+(v>1?'s':'');
+  updateSuggestBanner();
+}
+function setDaysPreset(n){
+  document.getElementById('days-slider').value=n; state.customDays=n; saveState();
+  document.getElementById('days-slider-val').textContent=n+' days'; updateSuggestBanner();
+}
+function setPrioMode(mode){
+  state.prioMode=mode; saveState();
+  ['exam','user','both'].forEach(function(m){ document.getElementById('pmode-'+m).classList.toggle('active',m===mode); });
+  updateSuggestBanner();
+}
+function getPlanDays(){
+  if(state.daysMode==='custom') return state.customDays||14;
+  return getDaysLeft();
+}
+function updateSuggestBanner(){
+  if(!state) return;
+  var days=getPlanDays(), remain=getTotals().remain;
+  var modeLabels={exam:'Exam weight',user:'Your priority',both:'Combined'};
+  var inclText={remaining:'remaining topics',all:'all topics',high_only:'high-priority only'}[state.planInclude||'remaining'];
+  if(!days){ document.getElementById('suggest-title').textContent='⚠️ No days configured'; document.getElementById('suggest-sub').textContent='Set exam date or choose custom duration.'; return; }
+  var perDay=Math.ceil(remain/days);
+  document.getElementById('suggest-title').textContent='Suggested: '+perDay+' topic'+(perDay>1?'s':'')+'/day over '+days+' days';
+  document.getElementById('suggest-sub').textContent='Mode: '+modeLabels[state.prioMode||'exam']+' · Include: '+inclText+' · '+remain+' topics left';
+}
+function suggestPlan(){
+  var days=getPlanDays(), remain=getTotals().remain;
+  if(!days){ showToast('⚠️ Configure study duration first!','warning'); return; }
+  var perDay=Math.ceil(remain/days);
+  document.getElementById('suggest-title').textContent='✅ Recommended: '+perDay+' topic'+(perDay>1?'s':'')+'/day for '+days+' days';
+  document.getElementById('suggest-sub').textContent='This covers all '+remain+' remaining topics efficiently.';
+  showToast('✨ Plan suggestion ready!','success');
+}
+function generatePlan(){
+  if(!currentSubject) return;
+  if(isGuest()){ showGuestBlock(); return; }
+  var days=getPlanDays();
+  if(!days){ showToast('⚠️ Set exam date or choose custom days!','warning'); return; }
+  var priMap={high:3,med:2,low:1,'':0}, include=state.planInclude||'remaining';
+  var topics=[];
+  getAllSections().forEach(function(sec){
+    sec.topics.forEach(function(t){
+      var done=!!state.completed[t.id], prio=state.priority[t.id]||'';
+      if(include==='remaining'&&done) return;
+      if(include==='high_only'&&prio!=='high') return;
+      topics.push(Object.assign({},t,{secName:sec.name,secColor:sec.color,secWeight:sec.weight,prio:prio}));
+    });
+  });
+  if(!topics.length){ document.getElementById('plan-container').innerHTML='<div class="no-data"><div class="big">🎉</div>All topics completed!</div>'; document.getElementById('plan-summary-row').style.display='none'; return; }
+  var mode=state.prioMode||'exam';
+  topics.sort(function(a,b){
+    if(mode==='exam') return b.secWeight-a.secWeight;
+    if(mode==='user') return priMap[b.prio]-priMap[a.prio];
+    return (priMap[b.prio]-priMap[a.prio])*3+(b.secWeight-a.secWeight);
+  });
+  var perDay=Math.ceil(topics.length/days), container=document.getElementById('plan-container');
+  container.innerHTML='';
+  var dayColors=['#5b8cff','#7c3aed','#06d6a0','#f59e0b','#ef4444','#ec4899','#14b8a6'];
+  var actualDays=Math.min(days,Math.ceil(topics.length/perDay));
+  for(var d=0;d<actualDays;d++){
+    var chunk=topics.slice(d*perDay,(d+1)*perDay); if(!chunk.length) break;
+    var date=new Date(); date.setDate(date.getDate()+d);
+    var dateStr=date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    var color=dayColors[d%dayColors.length];
+    var load=chunk.length<=2?'Light 🌤️':chunk.length<=4?'Moderate ☁️':'Heavy ⚡';
+    var card=document.createElement('div'); card.className='plan-day-card'; card.style.setProperty('--day-color',color); card.style.animationDelay=(d*0.05)+'s';
+    card.innerHTML='<div class="plan-day-header"><div class="plan-day-num" style="color:'+color+';">Day '+(d+1)+'</div><div class="plan-day-date">'+dateStr+'</div><div class="plan-day-load">'+load+' · '+chunk.length+' topic'+(chunk.length>1?'s':'')+'</div></div><div>'+chunk.map(function(t){ return '<span class="plan-topic-pill"><span class="dot" style="background:'+t.secColor+';"></span>'+(t.prio?{high:'🔴',med:'🟡',low:'🟢'}[t.prio]+' ':'')+'<span style="color:var(--text);">'+t.name+'</span><span style="font-size:0.63rem;opacity:0.6;margin-left:3px;">'+t.secWeight+'%</span></span>'; }).join('')+'</div>';
+    container.appendChild(card);
+  }
+  var modeLabel={exam:'📊 Exam weight',user:'⭐ My priority',both:'🔀 Combined'}[mode];
+  var inclLabel={remaining:'Remaining only',all:'All topics',high_only:'High-priority only'}[include];
+  document.getElementById('psum-days').textContent='📅 '+actualDays+' days';
+  document.getElementById('psum-topics').textContent='📌 '+topics.length+' topics';
+  document.getElementById('psum-mode').textContent=modeLabel;
+  document.getElementById('psum-load').textContent=inclLabel;
+  document.getElementById('plan-summary-row').style.display='block';
+  document.getElementById('plan-action-bar').style.display='block';
+  document.getElementById('plan-saved-badge').style.display='none';
+  document.getElementById('saved-plans-wrap').style.display='none';
+  document.getElementById('recent-plan-banner').style.display='none';
+  state.lastPlan=collectCurrentPlan();
+  state.lastPlan.name='Last Plan – '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  state.lastPlan.settings={days:'📅 '+actualDays+' days',topics:'📌 '+topics.length+' topics',mode:modeLabel,include:inclLabel};
+  saveState();
+  showToast('📅 Plan generated! '+actualDays+' days · '+topics.length+' topics','success');
+}
+function clearPlan(){
+  document.getElementById('plan-container').innerHTML='<div class="no-data"><div class="big">📅</div>Configure options above and click "Generate Plan".</div>';
+  document.getElementById('plan-summary-row').style.display='none';
+  document.getElementById('plan-action-bar').style.display='none';
+  showRecentPlanBanner();
+}
+
+/* ── Plan save/export/import ── */
+function collectCurrentPlan(){
+  var days=[]; document.querySelectorAll('#plan-container .plan-day-card').forEach(function(card,i){
+    var dayNum=card.querySelector('.plan-day-num')&&card.querySelector('.plan-day-num').textContent||('Day '+(i+1));
+    var date=card.querySelector('.plan-day-date')&&card.querySelector('.plan-day-date').textContent||'';
+    var load=card.querySelector('.plan-day-load')&&card.querySelector('.plan-day-load').textContent||'';
+    var topics=[]; card.querySelectorAll('.plan-topic-pill').forEach(function(pill){ topics.push(pill.textContent.trim().replace(/\s+/g,' ')); });
+    days.push({dayNum:dayNum,date:date,load:load,topics:topics});
+  });
+  return {generatedAt:new Date().toISOString(),subject:currentSubject,examDate:state.examDate||null,settings:{days:document.getElementById('psum-days').textContent,topics:document.getElementById('psum-topics').textContent,mode:document.getElementById('psum-mode').textContent,include:document.getElementById('psum-load').textContent},days:days};
+}
+function getSavedPlans(){ var session=getSession(); var key=session?'surgeonprep_plans_'+session+'_'+currentSubject:'surgeonprep_plans_guest_'+currentSubject; try{ return JSON.parse(localStorage.getItem(key)||'[]'); }catch(e){ return []; } }
+function putSavedPlans(plans){ var session=getSession(); var key=session?'surgeonprep_plans_'+session+'_'+currentSubject:'surgeonprep_plans_guest_'+currentSubject; localStorage.setItem(key,JSON.stringify(plans)); }
+function savePlan(){
+  if(isGuest()){ showGuestBlock(); return; }
+  var plan=collectCurrentPlan(); if(!plan.days.length){ showToast('⚠️ Generate a plan first!','warning'); return; }
+  plan.name='Plan – '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); plan.id=Date.now().toString(36);
+  var plans=getSavedPlans(); plans.unshift(plan); if(plans.length>10) plans.pop(); putSavedPlans(plans);
+  var badge=document.getElementById('plan-saved-badge'); badge.style.display='flex'; setTimeout(function(){ badge.style.display='none'; },3000);
+  showToast('💾 Plan saved!','success'); if(document.getElementById('saved-plans-wrap').style.display!=='none') renderSavedPlans();
+}
+function showSavedPlans(){ renderSavedPlans(); var w=document.getElementById('saved-plans-wrap'); w.style.display=w.style.display==='none'?'block':'none'; }
+function closeSavedPlans(){ document.getElementById('saved-plans-wrap').style.display='none'; }
+function renderSavedPlans(){
+  var plans=getSavedPlans(), list=document.getElementById('saved-plans-list');
+  if(!plans.length){ list.innerHTML='<div style="padding:14px;text-align:center;color:var(--text3);font-size:0.8rem;">No saved plans yet.</div>'; return; }
+  list.innerHTML=plans.map(function(p){ return '<div class="saved-plan-item"><div class="saved-plan-info"><div class="saved-plan-name">'+(p.name||'Untitled')+'</div><div class="saved-plan-meta">'+(p.settings&&p.settings.days||'')+' · '+(p.days&&p.days.length||0)+' day(s) · '+new Date(p.generatedAt).toLocaleDateString()+'</div></div><div class="saved-plan-actions"><button class="spact-btn" onclick="loadSavedPlan(\''+p.id+'\')">📂 Load</button><button class="spact-btn" onclick="exportSavedPlanJSON(\''+p.id+'\')">📤</button><button class="spact-btn del" onclick="deleteSavedPlan(\''+p.id+'\')">🗑</button></div></div>'; }).join('');
+}
+function loadSavedPlan(id){ var plan=getSavedPlans().find(function(p){ return p.id===id; }); if(!plan){ showToast('Not found.','warning'); return; } renderPlanFromData(plan); closeSavedPlans(); showToast('📂 "'+plan.name+'" loaded!','success'); }
+function deleteSavedPlan(id){ if(!confirm('Delete this plan?')) return; putSavedPlans(getSavedPlans().filter(function(p){ return p.id!==id; })); renderSavedPlans(); showToast('🗑 Deleted.','warning'); }
+function renderPlanFromData(plan){
+  var container=document.getElementById('plan-container'); container.innerHTML='';
+  var dayColors=['#5b8cff','#7c3aed','#06d6a0','#f59e0b','#ef4444','#ec4899','#14b8a6'];
+  (plan.days||[]).forEach(function(day,d){
+    var color=dayColors[d%dayColors.length], card=document.createElement('div');
+    card.className='plan-day-card'; card.style.setProperty('--day-color',color); card.style.animationDelay=(d*0.04)+'s';
+    card.innerHTML='<div class="plan-day-header"><div class="plan-day-num" style="color:'+color+';">'+day.dayNum+'</div><div class="plan-day-date">'+day.date+'</div><div class="plan-day-load">'+day.load+'</div></div><div>'+(day.topics||[]).map(function(t){ return '<span class="plan-topic-pill"><span class="dot" style="background:'+color+';"></span>'+t+'</span>'; }).join('')+'</div>';
+    container.appendChild(card);
+  });
+  if(plan.settings){ document.getElementById('psum-days').textContent=plan.settings.days||''; document.getElementById('psum-topics').textContent=plan.settings.topics||''; document.getElementById('psum-mode').textContent=plan.settings.mode||''; document.getElementById('psum-load').textContent=plan.settings.include||''; }
+  document.getElementById('plan-summary-row').style.display='block'; document.getElementById('plan-action-bar').style.display='block';
+}
+function exportPlanJSON(){ var plan=collectCurrentPlan(); if(!plan.days.length){ showToast('⚠️ Generate a plan first!','warning'); return; } plan.name='IraqiMed Plan – '+new Date().toLocaleDateString(); var blob=new Blob([JSON.stringify(plan,null,2)],{type:'application/json'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='iraqimed_plan_'+Date.now()+'.json'; a.click(); showToast('📤 Exported!','success'); }
+function exportSavedPlanJSON(id){ var plan=getSavedPlans().find(function(p){ return p.id===id; }); if(!plan) return; var blob=new Blob([JSON.stringify(plan,null,2)],{type:'application/json'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='iraqimed_plan_'+plan.id+'.json'; a.click(); showToast('📤 Exported!','success'); }
+function importPlan(event){ var file=event.target.files[0]; if(!file) return; var reader=new FileReader(); reader.onload=function(e){ try{ var plan=JSON.parse(e.target.result); if(!plan.days||!Array.isArray(plan.days)) throw new Error('Invalid'); plan.id=plan.id||Date.now().toString(36); plan.name=plan.name||'Imported – '+new Date().toLocaleDateString(); var plans=getSavedPlans(); plans.unshift(plan); if(plans.length>10) plans.pop(); putSavedPlans(plans); renderPlanFromData(plan); showToast('📥 Imported: "'+plan.name+'"!','success'); }catch(err){ showToast('❌ Invalid plan file.','warning'); } }; reader.readAsText(file); event.target.value=''; }
+function exportPlanPDF(){ if(!document.querySelectorAll('#plan-container .plan-day-card').length){ showToast('⚠️ Generate a plan first!','warning'); return; } window.print(); }
+function showRecentPlanBanner(){
+  if(!state) return;
+  var plan=state.lastPlan;
+  if(!plan||!plan.days||!plan.days.length) return;
+  var banner=document.getElementById('recent-plan-banner'); if(!banner) return;
+  document.getElementById('recent-plan-title').textContent=plan.name||'Last Generated Plan';
+  var s=plan.settings||{}, datePart=plan.generatedAt?new Date(plan.generatedAt).toLocaleDateString():'';
+  document.getElementById('recent-plan-meta').textContent=[s.days,s.topics,s.mode,datePart].filter(Boolean).join(' · ');
+  banner.style.display='block';
+}
+function loadLastPlan(){ var plan=state.lastPlan; if(!plan||!plan.days||!plan.days.length){ showToast('No recent plan.','warning'); return; } renderPlanFromData(plan); document.getElementById('recent-plan-banner').style.display='none'; showToast('🕐 Last plan loaded!','success'); }
+function dismissRecentBanner(){ document.getElementById('recent-plan-banner').style.display='none'; }
+
+/* ============================================================
+   INSIGHTS
+   ============================================================ */
+function renderInsights(){
+  if(!currentSubject) return;
+  var r=getTotals(), days=getDaysLeft();
+  var highTopics=[];
+  getAllSections().forEach(function(s){ s.topics.forEach(function(t){ if(state.priority[t.id]==='high'&&!state.completed[t.id]) highTopics.push(Object.assign({},t,{sec:s})); }); });
+  document.getElementById('insights-list').innerHTML=
+    '<div class="insight-item"><span class="insight-icon">✅</span><span class="insight-text">Topics Completed</span><span class="insight-val">'+r.done+' / '+r.total+'</span></div>'+
+    '<div class="insight-item"><span class="insight-icon">📌</span><span class="insight-text">Topics Remaining</span><span class="insight-val">'+r.remain+'</span></div>'+
+    '<div class="insight-item"><span class="insight-icon">🔴</span><span class="insight-text">High Priority Remaining</span><span class="insight-val text-high">'+highTopics.length+'</span></div>'+
+    '<div class="insight-item"><span class="insight-icon">📅</span><span class="insight-text">Days Until Exam</span><span class="insight-val">'+(days!==null?days:'Not set')+'</span></div>'+
+    '<div class="insight-item"><span class="insight-icon">📊</span><span class="insight-text">Daily Workload</span><span class="insight-val">'+(days&&days>0?Math.ceil(r.remain/days)+' topics/day':'—')+'</span></div>'+
+    '<div class="insight-item"><span class="insight-icon">🏆</span><span class="insight-text">Completion Rate</span><span class="insight-val">'+(r.total?Math.round(r.done/r.total*100):0)+'%</span></div>';
+  var hpEl=document.getElementById('high-priority-list');
+  hpEl.innerHTML=highTopics.length?highTopics.slice(0,10).map(function(t){ return '<div class="insight-item"><span class="insight-icon" style="font-size:0.88rem;">🔴</span><span class="insight-text">'+t.name+'</span><span class="badge badge-high">'+t.sec.name.slice(0,12)+'</span></div>'; }).join('')+(highTopics.length>10?'<div class="text-sm text-muted" style="padding:7px 14px;">+'+( highTopics.length-10)+' more...</div>':''):'<div class="insight-item"><span class="insight-icon">🎉</span><span class="insight-text text-muted">No high priority topics remaining!</span></div>';
+  document.getElementById('section-breakdown').innerHTML=getAllSections().map(function(sec){
+    var total=sec.topics.length, done=sec.topics.filter(function(t){ return state.completed[t.id]; }).length;
+    var pct=total?Math.round(done/total*100):0;
+    return '<div style="margin-bottom:11px;"><div class="flex-between" style="margin-bottom:3px;"><div class="flex gap-2"><span style="width:8px;height:8px;border-radius:50%;background:'+sec.color+';display:inline-block;margin-top:6px;flex-shrink:0;"></span><span class="text-sm">'+sec.name+'</span><span class="badge" style="background:'+sec.color+'20;color:'+sec.color+';">'+sec.weight+'%</span></div><span class="text-sm font-bold" style="color:'+sec.color+';">'+pct+'% <span style="color:var(--text2);font-weight:400;">('+done+'/'+total+')</span></span></div><div class="progress-track"><div class="progress-fill" style="width:'+pct+'%;background:'+sec.color+';"></div></div></div>';
+  }).join('');
+}
+
+/* ============================================================
+   MILESTONE / CONFETTI
+   ============================================================ */
+function checkMilestone(){
+  var r=getTotals(), pct=Math.round(r.done/r.total*100), milestones=[25,50,75,100];
+  if(milestones.indexOf(pct)>=0){
+    var key='surgeonprep_milestone_'+currentSubject;
+    var prev=parseInt(localStorage.getItem(key)||'0');
+    if(pct>prev){ localStorage.setItem(key,pct); showToast('🎉 '+pct+'% complete! Keep it up!','success'); if(pct===100) launchConfetti(); }
+  }
+}
+function launchConfetti(){
+  var canvas=document.createElement('canvas'); canvas.className='confetti'; document.body.appendChild(canvas);
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  var ctx=canvas.getContext('2d'), particles=[];
+  for(var i=0;i<150;i++) particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height-canvas.height,w:Math.random()*12+4,h:Math.random()*6+2,color:['#5b8cff','#7c3aed','#06d6a0','#f59e0b','#ef4444','#ec4899'][Math.floor(Math.random()*6)],vx:(Math.random()-0.5)*4,vy:Math.random()*3+2,angle:0,va:(Math.random()-0.5)*0.2});
+  var frame=0;
+  function draw(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(function(p){ p.x+=p.vx;p.y+=p.vy;p.angle+=p.va; ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.angle);ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore(); }); frame++; if(frame<200) requestAnimationFrame(draw); else canvas.remove(); }
+  draw();
+}
+
+/* ============================================================
+   RESET / EXPORT
+   ============================================================ */
+function confirmReset(){
+  if(isGuest()){ showGuestBlock(); return; }
+  if(confirm('Reset all progress for '+SUBJECTS[currentSubject].name+'? This cannot be undone.')){ 
+    state.completed={}; state.priority={}; state.lastPlan=null;
+    localStorage.removeItem('surgeonprep_milestone_'+currentSubject);
+    saveState(); renderAll(); showToast('🔄 Progress reset.','warning');
+  }
+}
+function exportData(){
+  var r=getTotals();
+  var data={exportDate:new Date().toISOString(),subject:SUBJECTS[currentSubject].name,examDate:state.examDate,progress:r.done+'/'+r.total+' ('+Math.round(r.done/r.total*100)+'%)',completed:Object.keys(state.completed).filter(function(k){ return state.completed[k]; }),priorities:state.priority};
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='iraqimed_data_'+currentSubject+'.json'; a.click();
+  showToast('💾 Data exported!','success');
+}
+
+/* ============================================================
+   RENDER ALL
+   ============================================================ */
+function renderAll(){
+  if(!currentSubject) return;
+  updateOverallProgress(); renderSectionProgress(); renderTopics(); updateStats(); renderInsights();
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function switchPanel(name){
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('panel-'+name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if(name==='insights') renderInsights();
+  if(name==='planner'){
+    renderInsights();
+    var container=document.getElementById('plan-container');
+    if(!container.querySelectorAll('.plan-day-card').length) showRecentPlanBanner();
+  }
+}
+function toggleTheme(){
+  var html=document.documentElement, isDark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('theme-btn').textContent=isDark?'☀️':'🌙';
+  localStorage.setItem('surgeonprep_theme',isDark?'light':'dark');
+}
+function setMotivational(){
+  var q=QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  document.getElementById('moti-text').textContent='"'+q.text+'"';
+  document.getElementById('moti-author').textContent='— '+q.author;
+}
+function showToast(msg,type){
+  var tc=document.getElementById('toast-container'), t=document.createElement('div');
+  t.className='toast';
+  var colors={success:'#06d6a0',warning:'#f59e0b',accent:'#5b8cff',default:'var(--text2)'};
+  t.style.borderLeft='3px solid '+(colors[type]||colors.default);
+  t.textContent=msg; tc.appendChild(t); setTimeout(function(){ t.remove(); },3200);
+}
+
+/* ============================================================
+   AUTH
+   ============================================================ */
+/* ── Toggle password visibility ─────────────────────────── */
+function togglePass(inputId, btn){
+  var inp = document.getElementById(inputId);
+  if(!inp) return;
+  var show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.textContent = show ? '🙈' : '👁';
+  btn.title = show ? 'Hide password' : 'Show password';
+}
+
+function switchAuthTab(tab){
+  document.getElementById('atab-login').classList.toggle('active',tab==='login');
+  document.getElementById('atab-register').classList.toggle('active',tab==='register');
+  document.getElementById('auth-login-form').style.display=tab==='login'?'':'none';
+  document.getElementById('auth-register-form').style.display=tab==='register'?'':'none';
+  document.getElementById('auth-error').classList.remove('show');
+  document.getElementById('auth-success').classList.remove('show');
+}
+function showAuthError(msg){ var e=document.getElementById('auth-error'); e.textContent=msg; e.classList.add('show'); document.getElementById('auth-success').classList.remove('show'); setAuthLoading(false); }
+function showAuthSuccess(msg){ var e=document.getElementById('auth-success'); e.textContent=msg; e.classList.add('show'); document.getElementById('auth-error').classList.remove('show'); }
+function setAuthLoading(on){
+  var isLogin=document.getElementById('atab-login').classList.contains('active');
+  var btn=document.getElementById(isLogin?'auth-submit-btn':'auth-register-btn');
+  if(!btn) return; btn.disabled=on; btn.textContent=on?'Please wait…':(isLogin?'Sign In →':'Create Account →');
+}
+function doLogin(){
+  var username=document.getElementById('login-user').value.trim().toLowerCase();
+  var password=document.getElementById('login-pass').value;
+  if(!username||!password){ showAuthError('Please fill in all fields.'); return; }
+  setAuthLoading(true);
+  dbGetUser(username).then(function(doc){
+    if(!doc.exists){ showAuthError('Username not found.'); return; }
+    var ud=doc.data();
+    if(ud.passwordHash!==hashPass(password)){ showAuthError('Incorrect password.'); return; }
+    setSession(username);
+    if(ud.appState) appState=Object.assign({},appState,ud.appState); else if(ud.data && !ud.appState){ /* migrate old surgery data */ if(!appState.surgery) appState.surgery={}; appState.surgery=Object.assign(appState.surgery,ud.data||{}); }
+    closeAuthAndInit(ud.name||username);
+    showToast('👋 Welcome back, '+(ud.name||username)+'!','success');
+  }).catch(function(err){ console.error(err); showAuthError('Connection error. Try again.'); });
+}
+function doRegister(){
+  var name=document.getElementById('reg-name').value.trim();
+  var username=document.getElementById('reg-user').value.trim().toLowerCase();
+  var password=document.getElementById('reg-pass').value;
+  var code=document.getElementById('reg-code').value.trim().toUpperCase();
+  if(!name||!username||!password||!code){ showAuthError('Please fill in all fields including the verification code.'); return; }
+  if(username.length<3){ showAuthError('Username must be at least 3 characters.'); return; }
+  if(!/^[a-z0-9_]+$/.test(username)){ showAuthError('Username: letters, numbers, _ only.'); return; }
+  if(password.length<4){ showAuthError('Password must be at least 4 characters.'); return; }
+  setAuthLoading(true);
+
+  // Step 1: Validate the access code
+  initFirebase().then(function(db){
+    return db.collection('iraqimed_codes').doc(code).get();
+  }).then(function(codeDoc){
+    if(!codeDoc.exists){ showAuthError('❌ Invalid access code. Contact Dr. Ahmed H. Fadl on @AH7Hf.'); return null; }
+    var codeData = codeDoc.data();
+    if(codeData.usedCount >= codeData.maxUses){ showAuthError('❌ This code has already been used. Contact @AH7Hf for a new code.'); return null; }
+    // Step 2: Check username not taken
+    return dbGetUser(username).then(function(userDoc){
+      if(userDoc.exists){ showAuthError('Username already taken.'); return null; }
+      // Step 3: Create account + mark code as used
+      return dbSetUser(username,{
+        name:name, username:username,
+        passwordHash:hashPass(password),
+        appState:{}, createdAt:new Date().toISOString(),
+        accessCode:code
+      }).then(function(){
+        // Increment code usage count
+        return initFirebase().then(function(db){
+          return db.collection('iraqimed_codes').doc(code).update({
+            usedCount: (codeData.usedCount||0)+1,
+            lastUsedBy: username,
+            lastUsedAt: new Date().toISOString()
+          });
+        });
+      }).then(function(){
+        showAuthSuccess('✅ Account created! Signing you in…');
+        setTimeout(function(){ setSession(username); closeAuthAndInit(name); showToast('🎉 Welcome, '+name+'!','success'); },1000);
+        return 'ok';
+      });
+    });
+  }).catch(function(err){ console.error(err); showAuthError('Connection error. Try again.'); });
+}
+
+/* ============================================================
+   ADMIN PANEL
+   ADMIN_USERNAME: the account that gets admin access
+   ADMIN_PASSWORD: separate admin password (not the account password)
+   ============================================================ */
+var ADMIN_USERNAME  = 'ah7hf';           // ← your username
+var ADMIN_PASSWORD  = 'drAhmed@admin1';  // ← change this to your admin password
+
+var _adminAuthed = false;
+
+function openAdmin(){
+  document.getElementById('user-menu').classList.remove('show');
+  document.getElementById('admin-pass').value='';
+  document.getElementById('admin-error').classList.remove('show');
+  document.getElementById('admin-login-wrap').style.display='block';
+  document.getElementById('admin-dashboard-wrap').style.display='none';
+  document.getElementById('admin-overlay').classList.remove('hidden');
+  setTimeout(function(){ document.getElementById('admin-pass').focus(); },150);
+}
+function closeAdmin(){
+  document.getElementById('admin-overlay').classList.add('hidden');
+  _adminAuthed=false;
+}
+function adminLogin(){
+  var pass=document.getElementById('admin-pass').value;
+  if(pass!==ADMIN_PASSWORD){
+    var e=document.getElementById('admin-error'); e.textContent='❌ Wrong admin password.'; e.classList.add('show'); return;
+  }
+  _adminAuthed=true;
+  document.getElementById('admin-login-wrap').style.display='none';
+  document.getElementById('admin-dashboard-wrap').style.display='block';
+  document.getElementById('admin-error').classList.remove('show');
+  loadAdminCodes();
+  loadAdminUsers();
+}
+
+/* ── Generate a random code ── */
+function generateCodeString(){
+  var chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var code='';
+  for(var i=0;i<8;i++){
+    if(i===4) code+='-';
+    code+=chars[Math.floor(Math.random()*chars.length)];
+  }
+  return code; // e.g. ABCD-EF23
+}
+
+function adminGenerateCode(){
+  if(!_adminAuthed) return;
+  var note=document.getElementById('code-note').value.trim();
+  var maxUses=parseInt(document.getElementById('code-uses').value)||1;
+  var code=generateCodeString();
+
+  initFirebase().then(function(db){
+    return db.collection('iraqimed_codes').doc(code).set({
+      code:code, note:note||'', maxUses:maxUses,
+      usedCount:0, createdAt:new Date().toISOString(),
+      createdBy:ADMIN_USERNAME, active:true
+    });
+  }).then(function(){
+    document.getElementById('new-code-value').textContent=code;
+    document.getElementById('new-code-uses').textContent=maxUses;
+    document.getElementById('new-code-display').style.display='block';
+    document.getElementById('code-note').value='';
+    loadAdminCodes();
+    showToast('✅ Code '+code+' generated!','success');
+  }).catch(function(err){ console.error(err); showToast('Error generating code.','warning'); });
+}
+
+function copyNewCode(){
+  var code=document.getElementById('new-code-value').textContent;
+  if(navigator.clipboard){ navigator.clipboard.writeText(code).then(function(){ showToast('📋 Code copied: '+code,'success'); }); }
+  else{ var ta=document.createElement('textarea'); ta.value=code; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); showToast('📋 Code copied: '+code,'success'); }
+}
+
+function loadAdminCodes(){
+  if(!_adminAuthed) return;
+  var list=document.getElementById('codes-list');
+  list.innerHTML='<div style="color:var(--text3);font-size:0.8rem;padding:8px;">Loading…</div>';
+  initFirebase().then(function(db){
+    return db.collection('iraqimed_codes').get();
+  }).then(function(snap){
+    if(snap.empty){
+      list.innerHTML='<div style="color:var(--text3);font-size:0.8rem;padding:8px;">No codes yet. Generate your first code above.</div>';
+      return;
+    }
+    // Sort by createdAt in JS instead of Firestore (avoids index requirement)
+    var docs=[];
+    snap.forEach(function(doc){ docs.push(doc.data()); });
+    docs.sort(function(a,b){ return (b.createdAt||'').localeCompare(a.createdAt||''); });
+    list.innerHTML='';
+    docs.forEach(function(d){
+      var used=d.usedCount>=d.maxUses;
+      var row=document.createElement('div');
+      row.className='code-row'+(used?' code-used':'');
+      row.innerHTML=
+        '<div class="code-val">'+d.code+'</div>'+
+        '<div class="code-meta">'+
+          (d.note?'<div>📝 '+d.note+'</div>':'')+
+          '<div>Uses: '+(d.usedCount||0)+' / '+d.maxUses+'</div>'+
+          (d.lastUsedBy?'<div>👤 '+d.lastUsedBy+'</div>':'')+
+          '<div style="opacity:0.6;">'+new Date(d.createdAt).toLocaleDateString()+'</div>'+
+        '</div>'+
+        '<button class="code-del" onclick="adminDeleteCode(\''+d.code+'\')">'+(used?'🗑 Delete':'❌ Revoke')+'</button>';
+      list.appendChild(row);
+    });
+  }).catch(function(err){
+    console.error('loadAdminCodes error:',err);
+    list.innerHTML='<div style="color:var(--high);font-size:0.8rem;padding:8px;">Error: '+err.message+'<br/>Make sure Firestore rules allow read/write for iraqimed_codes.</div>';
+  });
+}
+
+function adminDeleteCode(code){
+  if(!_adminAuthed) return;
+  initFirebase().then(function(db){
+    return db.collection('iraqimed_codes').doc(code).delete();
+  }).then(function(){ showToast('🗑 Code '+code+' deleted.','warning'); loadAdminCodes(); })
+  .catch(function(){ showToast('Error deleting code.','warning'); });
+}
+
+function loadAdminUsers(){
+  if(!_adminAuthed) return;
+  var list=document.getElementById('users-list');
+  list.innerHTML='<div style="color:var(--text3);font-size:0.8rem;padding:8px;">Loading…</div>';
+  initFirebase().then(function(db){
+    return db.collection('surgeonprep_users').get();
+  }).then(function(snap){
+    if(snap.empty){
+      list.innerHTML='<div style="color:var(--text3);font-size:0.8rem;padding:8px;">No students registered yet.</div>';
+      return;
+    }
+    var docs=[];
+    snap.forEach(function(doc){ docs.push(doc.data()); });
+    docs.sort(function(a,b){ return (b.createdAt||'').localeCompare(a.createdAt||''); });
+    list.innerHTML='<div style="font-size:0.76rem;font-weight:700;color:var(--text3);padding:4px 12px;">'+docs.length+' student(s) registered</div>';
+    docs.forEach(function(d){
+      var row=document.createElement('div');
+      row.className='user-row';
+      row.style.cssText='flex-wrap:wrap;gap:6px;';
+      var info=document.createElement('div');
+      info.style.flex='1';
+      info.innerHTML='<div class="user-row-name">'+d.name+'</div><div class="user-row-meta">@'+d.username+(d.accessCode?' · 🔑 '+d.accessCode:'')+'<br/>'+(d.createdAt?new Date(d.createdAt).toLocaleDateString():'—')+'</div>';
+      var resetBtn=document.createElement('button');
+      resetBtn.className='code-del';
+      resetBtn.textContent='🔑 Reset Password';
+      resetBtn.style.cssText='padding:4px 10px;font-size:0.72rem;white-space:nowrap;';
+      resetBtn.addEventListener('click',(function(username,name){ return function(){ adminShowResetPassword(username,name); }; })(d.username,d.name));
+      row.appendChild(info); row.appendChild(resetBtn); list.appendChild(row);
+    });
+  }).catch(function(err){
+    console.error('loadAdminUsers error:',err);
+    list.innerHTML='<div style="color:var(--high);font-size:0.8rem;padding:8px;">Error: '+err.message+'</div>';
+  });
+}
+
+function adminShowResetPassword(username,name){
+  var ex=document.getElementById('admin-reset-wrap'); if(ex) ex.remove();
+  var wrap=document.createElement('div'); wrap.id='admin-reset-wrap';
+  wrap.style.cssText='background:rgba(91,140,255,0.08);border:1px solid rgba(91,140,255,0.3);border-radius:10px;padding:14px;margin-top:10px;';
+  var inp=document.createElement('input'); inp.type='password'; inp.id='admin-new-pass'; inp.placeholder='New password for student (min 4 chars)';
+  inp.style.cssText='background:var(--bg3);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;padding-right:42px;color:var(--text);font-family:DM Sans,sans-serif;font-size:0.88rem;outline:none;width:100%;';
+  var passWrap=document.createElement('div'); passWrap.style.cssText='position:relative;display:flex;align-items:center;margin-bottom:10px;';
+  var eyeBtn=document.createElement('button'); eyeBtn.type='button'; eyeBtn.textContent='👁'; eyeBtn.title='Show password';
+  eyeBtn.style.cssText='position:absolute;right:10px;background:none;border:none;cursor:pointer;font-size:1.05rem;color:var(--text3);padding:4px;touch-action:manipulation;';
+  eyeBtn.addEventListener('click',function(){ var show=inp.type==='password'; inp.type=show?'text':'password'; eyeBtn.textContent=show?'🙈':'👁'; });
+  passWrap.appendChild(inp); passWrap.appendChild(eyeBtn);
+  var title=document.createElement('div'); title.style.cssText='font-size:0.82rem;font-weight:700;color:var(--text);margin-bottom:10px;';
+  title.innerHTML='🔑 Reset password for <span style="color:var(--accent);">'+name+' (@'+username+')</span>';
+  var btnRow=document.createElement('div'); btnRow.style.cssText='display:flex;gap:8px;';
+  var confirmBtn=document.createElement('button'); confirmBtn.id='admin-reset-confirm-btn';
+  confirmBtn.style.cssText='flex:1;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;';
+  confirmBtn.textContent='✅ Set New Password';
+  confirmBtn.addEventListener('click',function(){ adminDoResetPassword(username,name); });
+  var cancelBtn=document.createElement('button');
+  cancelBtn.style.cssText='background:var(--bg3);color:var(--text2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:inherit;';
+  cancelBtn.textContent='Cancel';
+  cancelBtn.addEventListener('click',function(){ wrap.remove(); });
+  var msgEl=document.createElement('div'); msgEl.id='admin-reset-msg'; msgEl.style.cssText='font-size:0.76rem;margin-top:8px;display:none;';
+  btnRow.appendChild(confirmBtn); btnRow.appendChild(cancelBtn);
+  wrap.appendChild(title); wrap.appendChild(passWrap); wrap.appendChild(btnRow); wrap.appendChild(msgEl);
+  var usersList=document.getElementById('users-list');
+  usersList.parentNode.insertBefore(wrap,usersList.nextSibling);
+  setTimeout(function(){ inp.focus(); },100);
+}
+
+function adminDoResetPassword(username,name){
+  var newPass=document.getElementById('admin-new-pass').value.trim();
+  var msgEl=document.getElementById('admin-reset-msg');
+  var btn=document.getElementById('admin-reset-confirm-btn');
+  if(!newPass||newPass.length<4){ msgEl.style.color='var(--high)'; msgEl.textContent='❌ Password must be at least 4 characters.'; msgEl.style.display='block'; return; }
+  btn.disabled=true; btn.textContent='Updating…';
+  msgEl.style.color='var(--text2)'; msgEl.textContent='Saving…'; msgEl.style.display='block';
+  dbSetUser(username,{passwordHash:hashPass(newPass)}).then(function(){
+    msgEl.style.color='var(--accent3)'; msgEl.textContent='✅ Password for '+name+' reset successfully!';
+    btn.textContent='✅ Done';
+    document.getElementById('admin-new-pass').value='';
+    showToast('🔑 Password reset for '+name,'success');
+    setTimeout(function(){ var w=document.getElementById('admin-reset-wrap'); if(w) w.remove(); },2500);
+  }).catch(function(err){ btn.disabled=false; btn.textContent='✅ Set New Password'; msgEl.style.color='var(--high)'; msgEl.textContent='❌ Error: '+err.message; msgEl.style.display='block'; });
+}
+
+function continueAsGuest(){ clearSession(); closeAuthAndInit('Guest'); }
+
+/* ── Guest mode guard ─────────────────────────────────────── */
+function isGuest(){ return !getSession(); }
+function showGuestBlock(){
+  // Remove any existing block toast
+  var ex=document.getElementById('guest-block-toast'); if(ex) ex.remove();
+  var tc=document.getElementById('toast-container');
+  var toast=document.createElement('div');
+  toast.className='toast'; toast.id='guest-block-toast';
+  toast.style.cssText='border-left:3px solid var(--accent);flex-direction:column;gap:8px;align-items:flex-start;max-width:320px;';
+  var msg=document.createElement('div');
+  msg.style.cssText='font-size:0.84rem;color:var(--text);font-weight:600;';
+  msg.textContent='🔒 Register to use this feature';
+  var sub=document.createElement('div');
+  sub.style.cssText='font-size:0.76rem;color:var(--text2);';
+  sub.textContent='Guest mode is view-only. Create a free account to track your progress.';
+  var btn=document.createElement('button');
+  btn.style.cssText='background:var(--accent);color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation;';
+  btn.textContent='📝 Register Now';
+  btn.addEventListener('click',function(){
+    toast.remove();
+    // Go back to auth screen on register tab
+    document.getElementById('auth-overlay').classList.remove('hidden');
+    document.getElementById('user-pill').style.display='none';
+    document.getElementById('main-nav').style.display='none';
+    document.getElementById('main-content').style.display='none';
+    document.getElementById('subject-selector').classList.add('hidden');
+    document.getElementById('subject-bar').classList.remove('show');
+    switchAuthTab('register');
+  });
+  toast.appendChild(msg); toast.appendChild(sub); toast.appendChild(btn);
+  tc.appendChild(toast);
+  setTimeout(function(){ if(toast.parentNode) toast.remove(); },5000);
+}
+function closeAuthAndInit(displayName){
+  document.getElementById('auth-overlay').classList.add('hidden');
+  document.getElementById('user-avatar').textContent=displayName.charAt(0).toUpperCase();
+  document.getElementById('user-name-pill').textContent=displayName;
+  document.getElementById('user-pill').style.display='flex';
+  document.getElementById('umenu-name').textContent=displayName;
+  var session=getSession();
+  document.getElementById('umenu-detail').textContent=session?('@'+session):'Guest session';
+  // Show admin button if this is the admin account
+  var adminBtn=document.getElementById('admin-menu-item');
+  if(adminBtn) adminBtn.style.display=(session===ADMIN_USERNAME)?'flex':'none';
+  // Show/hide guest banner
+  var banner = document.getElementById('guest-banner');
+  if(banner) banner.classList.toggle('show', !getSession());
+
+  // Try to load saved subject
+  var savedSubject=localStorage.getItem('surgeonprep_subject');
+  if(savedSubject&&SUBJECTS[savedSubject]){
+    selectSubject(savedSubject);
+  } else {
+    openSubjectSelector();
+  }
+}
+function promptGuestRegister(){
+  document.getElementById('auth-overlay').classList.remove('hidden');
+  document.getElementById('user-pill').style.display='none';
+  document.getElementById('main-nav').style.display='none';
+  document.getElementById('main-content').style.display='none';
+  document.getElementById('subject-selector').classList.add('hidden');
+  document.getElementById('subject-bar').classList.remove('show');
+  var banner=document.getElementById('guest-banner'); if(banner) banner.classList.remove('show');
+  switchAuthTab('register');
+}
+function toggleUserMenu(){ document.getElementById('user-menu').classList.toggle('show'); }
+function doLogout(){
+  document.getElementById('user-menu').classList.remove('show');
+  var session=getSession();
+  if(session) dbSetUser(session,{appState:Object.assign({},appState)}).catch(function(){});
+  clearSession(); localStorage.removeItem('surgeonprep_subject');
+  currentSubject=null; appState={};
+  if(window._cdInterval){ clearInterval(window._cdInterval); window._cdInterval=null; }
+  var banner=document.getElementById('guest-banner'); if(banner) banner.classList.remove('show');
+  document.getElementById('auth-overlay').classList.remove('hidden');
+  document.getElementById('user-pill').style.display='none';
+  document.getElementById('main-nav').style.display='none';
+  document.getElementById('main-content').style.display='none';
+  document.getElementById('subject-selector').classList.add('hidden');
+  document.getElementById('subject-bar').classList.remove('show');
+  document.getElementById('login-user').value=''; document.getElementById('login-pass').value='';
+  document.getElementById('auth-error').classList.remove('show'); document.getElementById('auth-success').classList.remove('show');
+  switchAuthTab('login'); showToast('👋 Signed out.','accent');
+}
+function showChangePassword(){
+  document.getElementById('user-menu').classList.remove('show');
+  ['chpass-old','chpass-new','chpass-confirm'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('chpass-error').classList.remove('show'); document.getElementById('chpass-success').classList.remove('show');
+  document.getElementById('chpass-overlay').classList.remove('hidden');
+}
+function closeChangePassword(){ document.getElementById('chpass-overlay').classList.add('hidden'); }
+function doChangePassword(){
+  var session=getSession(); if(!session){ closeChangePassword(); return; }
+  var oldP=document.getElementById('chpass-old').value, newP=document.getElementById('chpass-new').value, conP=document.getElementById('chpass-confirm').value;
+  var eEl=document.getElementById('chpass-error'), sEl=document.getElementById('chpass-success');
+  if(!oldP||!newP||!conP){ eEl.textContent='Fill in all fields.'; eEl.classList.add('show'); return; }
+  if(newP.length<4){ eEl.textContent='Password must be 4+ chars.'; eEl.classList.add('show'); return; }
+  if(newP!==conP){ eEl.textContent='Passwords do not match.'; eEl.classList.add('show'); return; }
+  dbGetUser(session).then(function(doc){
+    if(!doc.exists||doc.data().passwordHash!==hashPass(oldP)){ eEl.textContent='Current password incorrect.'; eEl.classList.add('show'); return; }
+    return dbSetUser(session,{passwordHash:hashPass(newP)}).then(function(){ sEl.textContent='Password updated!'; sEl.classList.add('show'); eEl.classList.remove('show'); setTimeout(closeChangePassword,1500); showToast('🔑 Password changed!','success'); });
+  }).catch(function(){ eEl.textContent='Connection error.'; eEl.classList.add('show'); });
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', function(){
+  // Theme
+  var savedTheme=localStorage.getItem('surgeonprep_theme');
+  if(savedTheme){ document.documentElement.setAttribute('data-theme',savedTheme); var themeBtn=document.getElementById('theme-btn'); if(themeBtn) themeBtn.textContent=savedTheme==='dark'?'🌙':'☀️'; }
+
+  document.getElementById('footer-year').textContent=new Date().getFullYear();
+
+  // Close user menu
+  document.addEventListener('pointerdown',function(e){
+    if(!e.target.closest('#user-pill')&&!e.target.closest('#user-menu')){ var m=document.getElementById('user-menu'); if(m) m.classList.remove('show'); }
+  });
+
+  // Countdown interval
+  window._cdInterval=setInterval(function(){ if(currentSubject) updateCountdown(); },1000);
+
+  // Auto-save to Firebase every 30s
+  setInterval(function(){ var s=getSession(); if(s) dbSetUser(s,{appState:Object.assign({},appState)}).catch(function(){}); },30000);
+  window.addEventListener('beforeunload',function(){ var s=getSession(); if(s) dbSetUser(s,{appState:Object.assign({},appState)}).catch(function(){}); });
+
+  // Boot auth
+  var session=getSession();
+  if(session){
+    initFirebase().then(function(){ return dbGetUser(session); }).then(function(doc){
+      if(doc&&doc.exists){
+        var ud=doc.data();
+        if(ud.appState) appState=Object.assign({},appState,ud.appState); else if(ud.data && !ud.appState){ /* migrate old surgery data */ if(!appState.surgery) appState.surgery={}; appState.surgery=Object.assign(appState.surgery,ud.data||{}); }
+        closeAuthAndInit(ud.name||session);
+      } else { clearSession(); }
+    }).catch(function(){
+      // Fallback to localStorage
+      var local=localStorage.getItem('surgeonprep_appstate');
+      if(local){ try{ appState=JSON.parse(local); }catch(e){} }
+      closeAuthAndInit(session);
+    });
+  }
+  // No session: auth overlay visible by default
+});
+</script>
+</body>
+</html>
