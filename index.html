@@ -471,7 +471,53 @@ main{max-width:1400px;margin:0 auto;padding:24px 16px;}
 .sm-topic-del{background:none;border:none;cursor:pointer;color:var(--text3);font-size:0.95rem;padding:0 2px;transition:color var(--transition);touch-action:manipulation;}
 .sm-topic-del:hover{color:var(--high);}
 
-/* ── PREVIEW MODAL ───────────────────────────────────────── */
+/* ── NOTIFICATION BELL ───────────────────────────────────── */
+.notif-bell{
+  position:relative;background:var(--card);border:1px solid var(--border);
+  border-radius:50%;width:38px;height:38px;display:flex;align-items:center;
+  justify-content:center;font-size:1rem;cursor:pointer;
+  transition:all var(--transition);touch-action:manipulation;
+}
+.notif-bell:hover{background:var(--card2);border-color:var(--accent);}
+.notif-badge{
+  position:absolute;top:-4px;right:-4px;
+  background:var(--high);color:#fff;border-radius:50%;
+  width:18px;height:18px;font-size:0.62rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg);
+}
+/* ── NOTIFICATION MODAL ──────────────────────────────────── */
+.notif-modal-overlay{
+  position:fixed;inset:0;z-index:9800;
+  background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);
+  display:flex;align-items:flex-start;justify-content:flex-end;
+  padding:70px 14px 14px;animation:fadeIn 0.2s ease;
+}
+.notif-modal-overlay.hidden{display:none;}
+.notif-modal-box{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);width:100%;max-width:360px;
+  box-shadow:var(--shadow);overflow:hidden;
+  animation:slideIn 0.25s ease;max-height:80vh;display:flex;flex-direction:column;
+}
+.notif-modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.notif-modal-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.92rem;color:var(--text);}
+.notif-mark-all{font-size:0.73rem;color:var(--accent);cursor:pointer;font-weight:600;touch-action:manipulation;}
+.notif-list{overflow-y:auto;flex:1;}
+.notif-item{
+  padding:14px 16px;border-bottom:1px solid var(--border);
+  transition:background var(--transition);cursor:pointer;
+}
+.notif-item:hover{background:var(--bg3);}
+.notif-item.unread{background:rgba(91,140,255,0.06);border-left:3px solid var(--accent);}
+.notif-item-title{font-weight:700;font-size:0.84rem;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:7px;}
+.notif-item-body{font-size:0.78rem;color:var(--text2);line-height:1.5;}
+.notif-item-time{font-size:0.69rem;color:var(--text3);margin-top:5px;}
+.notif-empty{text-align:center;padding:30px 20px;color:var(--text3);font-size:0.82rem;}
+.notif-close-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:1.1rem;padding:2px;touch-action:manipulation;}
 .preview-overlay{position:fixed;inset:0;z-index:9900;background:rgba(0,0,0,0.92);display:flex;flex-direction:column;animation:fadeIn 0.2s ease;}
 .preview-overlay.hidden{display:none;}
 .preview-topbar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
@@ -681,6 +727,9 @@ input,select{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
       <div class="user-avatar" id="user-avatar">G</div>
       <div class="user-name" id="user-name-pill">Guest</div>
     </div>
+    <button class="notif-bell" id="notif-bell" onclick="openNotifications()" style="display:none;" title="Notifications">
+      🔔<span class="notif-badge" id="notif-badge" style="display:none;">0</span>
+    </button>
     <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
   </div>
 </header>
@@ -945,6 +994,33 @@ input,select{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
         <div id="users-list" style="display:flex;flex-direction:column;gap:5px;max-height:240px;overflow-y:auto;margin-bottom:10px;"></div>
         <button class="auth-guest" onclick="loadAdminUsers()" style="margin-top:4px;">🔄 Refresh Students</button>
 
+        <div class="auth-divider"><span></span></div>
+
+        <!-- Send Notification -->
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:10px;">📢 Send Notification to All Students</div>
+        <div class="auth-field" style="margin-bottom:8px;">
+          <label>TITLE</label>
+          <input type="text" id="notif-title-input" placeholder="e.g. Welcome! or New lectures added" maxlength="80"/>
+        </div>
+        <div class="auth-field" style="margin-bottom:10px;">
+          <label>MESSAGE</label>
+          <textarea id="notif-body-input" placeholder="Write your message here…" maxlength="500" rows="3" style="background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;width:100%;resize:vertical;transition:border-color var(--transition);"></textarea>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+          <button class="auth-guest" style="flex:1;padding:6px;" onclick="setNotifTemplate('welcome')">👋 Welcome</button>
+          <button class="auth-guest" style="flex:1;padding:6px;" onclick="setNotifTemplate('lecture')">📚 New Lecture</button>
+          <button class="auth-guest" style="flex:1;padding:6px;" onclick="setNotifTemplate('exam')">⚠️ Exam Reminder</button>
+        </div>
+        <div id="notif-send-msg" style="font-size:0.76rem;margin-bottom:8px;display:none;"></div>
+        <button class="auth-submit" onclick="adminSendNotification()" style="margin-top:0;">📢 Send to All Students</button>
+
+        <div class="auth-divider"><span></span></div>
+
+        <!-- Previous notifications -->
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:8px;">Previous Notifications</div>
+        <div id="notif-history-list" style="display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto;margin-bottom:10px;"></div>
+        <button class="auth-guest" onclick="loadNotifHistory()">🔄 Refresh</button>
+
         <div class="auth-divider"><span>or</span></div>
         <button class="auth-guest" onclick="closeAdmin()">Close Admin Panel</button>
       </div>
@@ -963,6 +1039,22 @@ input,select{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .user-row-name{font-size:0.83rem;font-weight:600;color:var(--text);flex:1;}
 .user-row-meta{font-size:0.71rem;color:var(--text2);}
 </style>
+<!-- ── NOTIFICATION MODAL ─────────────────────────────────── -->
+<div class="notif-modal-overlay hidden" id="notif-modal-overlay" onclick="closeNotifications(event)">
+  <div class="notif-modal-box" onclick="event.stopPropagation()">
+    <div class="notif-modal-header">
+      <div class="notif-modal-title">🔔 Notifications</div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="notif-mark-all" onclick="markAllRead()">Mark all read</span>
+        <button class="notif-close-btn" onclick="closeNotifications()">✕</button>
+      </div>
+    </div>
+    <div class="notif-list" id="notif-list">
+      <div class="notif-empty">No notifications yet.</div>
+    </div>
+  </div>
+</div>
+
 <!-- ── PREVIEW MODAL ──────────────────────────────────────── -->
 <div class="preview-overlay hidden" id="preview-overlay">
   <div class="preview-topbar">
@@ -2156,6 +2248,7 @@ function adminLogin(){
   document.getElementById('admin-error').classList.remove('show');
   loadAdminCodes();
   loadAdminUsers();
+  loadNotifHistory();
 }
 
 /* ── Generate a random code ── */
@@ -2373,6 +2466,13 @@ function closeAuthAndInit(displayName){
   var banner = document.getElementById('guest-banner');
   if(banner) banner.classList.toggle('show', !getSession());
 
+  // Show notification bell for logged-in users
+  var bell=document.getElementById('notif-bell');
+  if(bell) bell.style.display=getSession()?'flex':'none';
+
+  // Load notifications
+  loadNotifications();
+
   // Try to load saved subject
   var savedSubject=localStorage.getItem('surgeonprep_subject');
   if(savedSubject&&SUBJECTS[savedSubject]){
@@ -2407,12 +2507,8 @@ function doLogout(){
   currentSubject=null; appState={};
   if(window._cdInterval){ clearInterval(window._cdInterval); window._cdInterval=null; }
   var banner=document.getElementById('guest-banner'); if(banner) banner.classList.remove('show');
+  var bell=document.getElementById('notif-bell'); if(bell) bell.style.display='none';
   document.getElementById('auth-overlay').classList.remove('hidden');
-  document.getElementById('user-pill').style.display='none';
-  document.getElementById('main-nav').style.display='none';
-  document.getElementById('main-content').style.display='none';
-  document.getElementById('subject-selector').classList.add('hidden');
-  document.getElementById('subject-bar').classList.remove('show');
   document.getElementById('login-user').value=''; document.getElementById('login-pass').value='';
   document.getElementById('auth-error').classList.remove('show'); document.getElementById('auth-success').classList.remove('show');
   switchAuthTab('login'); showToast('👋 Signed out.','accent');
@@ -2524,7 +2620,173 @@ function renderResItems(topicId){
   });
 }
 
-/* ── In-app Preview ─────────────────────────────────────── */
+/* ============================================================
+   NOTIFICATION SYSTEM
+   Firestore: iraqimed_notifications/{id}
+   { id, title, body, createdAt, createdBy, type }
+   Read tracking: localStorage key per user
+   ============================================================ */
+
+var _notifications = [];
+
+// ── Load notifications and update bell ──────────────────────
+function loadNotifications(){
+  initFirebase().then(function(db){
+    return db.collection('iraqimed_notifications').get();
+  }).then(function(snap){
+    _notifications = [];
+    snap.forEach(function(doc){ _notifications.push(doc.data()); });
+    // Sort newest first
+    _notifications.sort(function(a,b){ return (b.createdAt||'').localeCompare(a.createdAt||''); });
+    updateNotifBell();
+  }).catch(function(){});
+}
+
+function getReadIds(){
+  var session=getSession()||'guest';
+  try{ return JSON.parse(localStorage.getItem('iraqimed_read_'+session)||'[]'); }catch(e){ return []; }
+}
+function markIdRead(id){
+  var session=getSession()||'guest';
+  var ids=getReadIds(); if(ids.indexOf(id)===-1) ids.push(id);
+  localStorage.setItem('iraqimed_read_'+session, JSON.stringify(ids));
+}
+
+function updateNotifBell(){
+  var bell=document.getElementById('notif-bell');
+  var badge=document.getElementById('notif-badge');
+  if(!bell) return;
+  var readIds=getReadIds();
+  var unread=_notifications.filter(function(n){ return readIds.indexOf(n.id)===-1; }).length;
+  bell.style.display='flex';
+  if(unread>0){
+    badge.style.display='flex'; badge.textContent=unread>9?'9+':unread;
+    bell.style.borderColor='var(--accent)';
+  } else {
+    badge.style.display='none';
+    bell.style.borderColor='var(--border)';
+  }
+}
+
+// ── Open notification panel ─────────────────────────────────
+function openNotifications(){
+  renderNotifList();
+  document.getElementById('notif-modal-overlay').classList.remove('hidden');
+}
+function closeNotifications(e){
+  if(e && e.target!==document.getElementById('notif-modal-overlay')) return;
+  document.getElementById('notif-modal-overlay').classList.add('hidden');
+}
+
+function renderNotifList(){
+  var list=document.getElementById('notif-list');
+  var readIds=getReadIds();
+  if(!_notifications.length){
+    list.innerHTML='<div class="notif-empty">📭 No notifications yet.</div>'; return;
+  }
+  list.innerHTML='';
+  _notifications.forEach(function(n){
+    var isUnread=readIds.indexOf(n.id)===-1;
+    var item=document.createElement('div');
+    item.className='notif-item'+(isUnread?' unread':'');
+    var timeAgo=formatTimeAgo(n.createdAt);
+    var typeIcon={welcome:'👋',lecture:'📚',exam:'⚠️',general:'📢'}[n.type]||'📢';
+    item.innerHTML=
+      '<div class="notif-item-title">'+typeIcon+' '+n.title+(isUnread?'<span style="background:var(--accent);color:#fff;font-size:0.6rem;padding:1px 6px;border-radius:10px;font-weight:700;">NEW</span>':'')+'</div>'+
+      '<div class="notif-item-body">'+n.body+'</div>'+
+      '<div class="notif-item-time">'+timeAgo+'</div>';
+    item.addEventListener('click', function(){ markIdRead(n.id); item.classList.remove('unread'); updateNotifBell(); });
+    list.appendChild(item);
+  });
+}
+
+function markAllRead(){
+  _notifications.forEach(function(n){ markIdRead(n.id); });
+  renderNotifList(); updateNotifBell();
+}
+
+function formatTimeAgo(iso){
+  if(!iso) return '';
+  var diff=Date.now()-new Date(iso).getTime();
+  var m=Math.floor(diff/60000), h=Math.floor(diff/3600000), d=Math.floor(diff/86400000);
+  if(d>0) return d+'d ago';
+  if(h>0) return h+'h ago';
+  if(m>0) return m+'m ago';
+  return 'Just now';
+}
+
+// ── Admin: Send notification ────────────────────────────────
+function adminSendNotification(){
+  var title=document.getElementById('notif-title-input').value.trim();
+  var body=document.getElementById('notif-body-input').value.trim();
+  var msgEl=document.getElementById('notif-send-msg');
+  if(!title||!body){ msgEl.style.color='var(--high)'; msgEl.textContent='Please fill in both title and message.'; msgEl.style.display='block'; return; }
+  var notif={
+    id:Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,6),
+    title:title, body:body,
+    type:_notifCurrentType||'general',
+    createdAt:new Date().toISOString(),
+    createdBy:ADMIN_USERNAME
+  };
+  msgEl.style.color='var(--text2)'; msgEl.textContent='Sending…'; msgEl.style.display='block';
+  initFirebase().then(function(db){
+    return db.collection('iraqimed_notifications').doc(notif.id).set(notif);
+  }).then(function(){
+    msgEl.style.color='var(--accent3)'; msgEl.textContent='✅ Notification sent to all students!';
+    document.getElementById('notif-title-input').value='';
+    document.getElementById('notif-body-input').value='';
+    _notifCurrentType='general';
+    _notifications.unshift(notif);
+    loadNotifHistory();
+    updateNotifBell();
+    showToast('📢 Notification sent!','success');
+    setTimeout(function(){ msgEl.style.display='none'; },3000);
+  }).catch(function(err){ msgEl.style.color='var(--high)'; msgEl.textContent='Error: '+err.message; });
+}
+
+var _notifCurrentType='general';
+function setNotifTemplate(type){
+  _notifCurrentType=type;
+  var templates={
+    welcome:{title:'👋 Welcome to IraqiMed Blueprint!',body:'Welcome to your 6th Year Exam Planner! Start by selecting your subject and checking off your topics. Good luck! 🎓'},
+    lecture:{title:'📚 New Lecture Resources Added!',body:'New lecture materials have been added to some topics. Open the Topics panel and look for the 📚 button to access them.'},
+    exam:{title:'⚠️ Exam Reminder',body:'The exam is approaching! Make sure to review your high-priority topics and generate a study plan. Stay focused! 💪'}
+  };
+  if(templates[type]){
+    document.getElementById('notif-title-input').value=templates[type].title;
+    document.getElementById('notif-body-input').value=templates[type].body;
+  }
+}
+
+function loadNotifHistory(){
+  var list=document.getElementById('notif-history-list');
+  if(!list) return;
+  if(!_notifications.length){ list.innerHTML='<div style="color:var(--text3);font-size:0.78rem;padding:8px;">No notifications sent yet.</div>'; return; }
+  list.innerHTML='';
+  _notifications.slice(0,10).forEach(function(n){
+    var row=document.createElement('div');
+    row.style.cssText='background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:9px 12px;';
+    row.innerHTML=
+      '<div style="font-size:0.82rem;font-weight:600;color:var(--text);">'+n.title+'</div>'+
+      '<div style="font-size:0.73rem;color:var(--text2);margin-top:2px;">'+n.body.slice(0,60)+(n.body.length>60?'…':'')+'</div>'+
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px;">'+
+        '<span style="font-size:0.68rem;color:var(--text3);">'+formatTimeAgo(n.createdAt)+'</span>'+
+        '<button onclick="adminDeleteNotif(\''+n.id+'\')" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:0.78rem;touch-action:manipulation;">🗑</button>'+
+      '</div>';
+    list.appendChild(row);
+  });
+}
+
+function adminDeleteNotif(id){
+  initFirebase().then(function(db){ return db.collection('iraqimed_notifications').doc(id).delete(); })
+  .then(function(){
+    _notifications=_notifications.filter(function(n){ return n.id!==id; });
+    loadNotifHistory(); updateNotifBell();
+    showToast('🗑 Notification deleted.','warning');
+  }).catch(function(err){ showToast('Error: '+err.message,'warning'); });
+}
+
+
 function openPreview(res){
   var overlay=document.getElementById('preview-overlay');
   var body=document.getElementById('preview-body');
