@@ -471,6 +471,23 @@ main{max-width:1400px;margin:0 auto;padding:24px 16px;}
 .sm-topic-del{background:none;border:none;cursor:pointer;color:var(--text3);font-size:0.95rem;padding:0 2px;transition:color var(--transition);touch-action:manipulation;}
 .sm-topic-del:hover{color:var(--high);}
 
+/* ── PREVIEW MODAL ───────────────────────────────────────── */
+.preview-overlay{position:fixed;inset:0;z-index:9900;background:rgba(0,0,0,0.92);display:flex;flex-direction:column;animation:fadeIn 0.2s ease;}
+.preview-overlay.hidden{display:none;}
+.preview-topbar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
+.preview-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.preview-download-btn{display:flex;align-items:center;gap:5px;background:var(--accent3);color:#fff;border:none;border-radius:8px;padding:6px 13px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation;flex-shrink:0;transition:all var(--transition);}
+.preview-download-btn:hover{background:#059669;}
+.preview-close-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:6px 11px;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:inherit;touch-action:manipulation;flex-shrink:0;transition:all var(--transition);}
+.preview-close-btn:hover{border-color:var(--high);color:var(--high);}
+.preview-body{flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;background:#000;}
+.preview-body iframe{width:100%;height:100%;border:none;flex:1;}
+.preview-body video{width:100%;height:100%;flex:1;object-fit:contain;}
+.preview-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;flex:1;color:var(--text2);font-size:0.88rem;background:var(--bg);}
+.preview-spinner{width:38px;height:38px;border-radius:50%;border:4px solid var(--border);border-top-color:var(--accent);animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.preview-fallback{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;flex:1;color:var(--text2);text-align:center;padding:30px;background:var(--bg);}
+.preview-fallback-icon{font-size:3.5rem;}
 /* ── TOAST ───────────────────────────────────────────────── */
 .toast-container{position:fixed;bottom:20px;right:20px;z-index:2000;display:flex;flex-direction:column;gap:7px;}
 .toast{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 16px;font-size:0.83rem;color:var(--text);box-shadow:var(--shadow);animation:slideIn 0.3s ease both;display:flex;align-items:center;gap:9px;}
@@ -946,6 +963,21 @@ input,select{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .user-row-name{font-size:0.83rem;font-weight:600;color:var(--text);flex:1;}
 .user-row-meta{font-size:0.71rem;color:var(--text2);}
 </style>
+<!-- ── PREVIEW MODAL ──────────────────────────────────────── -->
+<div class="preview-overlay hidden" id="preview-overlay">
+  <div class="preview-topbar">
+    <div class="preview-title" id="preview-title">Preview</div>
+    <a id="preview-download-btn" class="preview-download-btn" download target="_blank">⬇️ Download</a>
+    <button class="preview-close-btn" onclick="closePreview()">✕ Close</button>
+  </div>
+  <div class="preview-body" id="preview-body">
+    <div class="preview-loading" id="preview-loading">
+      <div class="preview-spinner"></div>
+      <div>Loading preview…</div>
+    </div>
+  </div>
+</div>
+
 <!-- ── RESOURCE MODAL ─────────────────────────────────────── -->
 <div class="res-modal-overlay hidden" id="res-modal-overlay">
   <div class="res-modal-box">
@@ -964,16 +996,35 @@ input,select{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
           <button class="add-res-tab"        id="restab-pdf"   onclick="switchResTab('pdf')">📄 PDF</button>
           <button class="add-res-tab"        id="restab-video" onclick="switchResTab('video')">▶️ Video</button>
         </div>
+
+        <!-- Title field (always shown) -->
         <div class="auth-field" style="margin-bottom:8px;">
           <label>TITLE</label>
-          <input type="text" id="res-name-input" placeholder="e.g. Lecture 1 — Introduction" maxlength="80" style="background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:DM Sans,sans-serif;font-size:0.88rem;outline:none;width:100%;transition:border-color var(--transition);" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"/>
+          <input type="text" id="res-name-input" placeholder="e.g. Lecture 1 — Introduction" maxlength="80" style="background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:DM Sans,sans-serif;font-size:0.88rem;outline:none;width:100%;"/>
         </div>
-        <div class="auth-field" style="margin-bottom:10px;">
+
+        <!-- URL input — shown for link & video tabs -->
+        <div id="res-url-wrap" class="auth-field" style="margin-bottom:10px;">
           <label id="res-url-label">URL / LINK</label>
-          <input type="url" id="res-url-input" placeholder="https://..." style="background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:DM Sans,sans-serif;font-size:0.88rem;outline:none;width:100%;transition:border-color var(--transition);" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"/>
+          <input type="url" id="res-url-input" placeholder="https://..." style="background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:DM Sans,sans-serif;font-size:0.88rem;outline:none;width:100%;"/>
         </div>
+
+        <!-- PDF via Google Drive link — shown only for pdf tab -->
+        <div id="res-pdf-wrap" style="display:none;margin-bottom:10px;">
+          <label style="font-size:0.76rem;font-weight:600;color:var(--text2);letter-spacing:0.03em;display:block;margin-bottom:6px;">GOOGLE DRIVE PDF LINK</label>
+          <input type="url" id="res-pdf-drive-input" placeholder="https://drive.google.com/file/d/..." style="background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:DM Sans,sans-serif;font-size:0.88rem;outline:none;width:100%;margin-bottom:10px;"/>
+          <!-- How to instructions -->
+          <div style="background:rgba(6,214,160,0.07);border:1px solid rgba(6,214,160,0.25);border-radius:10px;padding:12px 14px;font-size:0.76rem;color:var(--text2);line-height:1.8;">
+            <div style="font-weight:700;color:var(--accent3);margin-bottom:6px;">📋 How to get a Google Drive link:</div>
+            <div>1️⃣ Upload your PDF to <a href="https://drive.google.com" target="_blank" style="color:var(--accent);">Google Drive</a></div>
+            <div>2️⃣ Right-click the file → <b style="color:var(--text);">Share</b></div>
+            <div>3️⃣ Change to <b style="color:var(--text);">"Anyone with the link"</b></div>
+            <div>4️⃣ Click <b style="color:var(--text);">Copy link</b> → paste it above</div>
+          </div>
+        </div>
+
         <div id="res-add-error" style="font-size:0.76rem;color:var(--high);margin-bottom:8px;display:none;"></div>
-        <button onclick="adminAddResource()" style="width:100%;padding:10px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--accent3),#0891b2);color:#fff;font-family:Syne,sans-serif;font-weight:700;font-size:0.92rem;transition:all var(--transition);touch-action:manipulation;">➕ Add Resource</button>
+        <button id="res-add-btn" onclick="adminAddResource()" style="width:100%;padding:10px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--accent3),#0891b2);color:#fff;font-family:Syne,sans-serif;font-weight:700;font-size:0.92rem;transition:all 0.2s;touch-action:manipulation;">➕ Add Resource</button>
       </div>
       <button class="auth-guest" onclick="closeResModal()" style="margin-top:14px;width:100%;">✕ Close</button>
     </div>
@@ -2432,11 +2483,38 @@ function renderResItems(topicId){
     var item=document.createElement('div'); item.className='res-item';
     var icon=document.createElement('div'); icon.className='res-item-icon'; icon.textContent=typeIcon[res.type]||'🔗';
     var info=document.createElement('div'); info.className='res-item-info';
-    info.innerHTML='<div class="res-item-name">'+res.name+'</div><div class="res-item-type">'+(typeLabel[res.type]||'Resource')+'</div>';
-    var openBtn=document.createElement('button'); openBtn.className='res-item-open';
-    openBtn.textContent=res.type==='pdf'?'📄 Open':res.type==='video'?'▶️ Watch':'🔗 Open';
-    openBtn.addEventListener('click',function(){ window.open(res.url,'_blank','noopener'); });
-    item.appendChild(icon); item.appendChild(info); item.appendChild(openBtn);
+    var sizeTxt = res.fileSize ? ' · '+Math.round(res.fileSize/1024)+'KB' : '';
+    info.innerHTML='<div class="res-item-name">'+res.name+'</div><div class="res-item-type">'+(typeLabel[res.type]||'Resource')+sizeTxt+'</div>';
+
+    // Preview button — PDF and Video get in-app preview, links open externally
+    var previewBtn=document.createElement('button');
+    if(res.type==='pdf'){
+      previewBtn.className='res-item-open';
+      previewBtn.textContent='👁 Preview';
+      previewBtn.addEventListener('click',(function(r){ return function(){ openPreview(r); }; })(res));
+    } else if(res.type==='video'){
+      previewBtn.className='res-item-open';
+      previewBtn.textContent='▶️ Watch';
+      previewBtn.title='Opens in YouTube / browser';
+      previewBtn.addEventListener('click',(function(r){ return function(){ openPreview(r); }; })(res));
+    } else {
+      previewBtn.className='res-item-open';
+      previewBtn.textContent='🔗 Open';
+      previewBtn.addEventListener('click',function(){ window.open(res.url,'_blank','noopener'); });
+    }
+
+    item.appendChild(icon); item.appendChild(info); item.appendChild(previewBtn);
+
+    // Download button for PDFs
+    if(res.type==='pdf'){
+      var dlBtn=document.createElement('a');
+      dlBtn.href=res.url; dlBtn.target='_blank'; dlBtn.rel='noopener'; dlBtn.download='';
+      dlBtn.className='res-item-del';
+      dlBtn.style.cssText='display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:0.78rem;';
+      dlBtn.title='Download PDF'; dlBtn.textContent='⬇️';
+      item.appendChild(dlBtn);
+    }
+
     if(_resIsAdminMode){
       var delBtn=document.createElement('button'); delBtn.className='res-item-del'; delBtn.textContent='🗑'; delBtn.title='Delete';
       delBtn.addEventListener('click',(function(rid){ return function(){ adminDeleteResource(topicId,rid); }; })(res.id));
@@ -2446,31 +2524,171 @@ function renderResItems(topicId){
   });
 }
 
+/* ── In-app Preview ─────────────────────────────────────── */
+function openPreview(res){
+  var overlay=document.getElementById('preview-overlay');
+  var body=document.getElementById('preview-body');
+  var titleEl=document.getElementById('preview-title');
+  var dlBtn=document.getElementById('preview-download-btn');
+
+  titleEl.textContent=res.name;
+  dlBtn.href=res.url;
+  dlBtn.download=res.fileName||res.name;
+  dlBtn.style.display=(res.type==='pdf')?'flex':'none';
+
+  // Show loading spinner
+  body.innerHTML='<div class="preview-loading"><div class="preview-spinner"></div><div>Loading preview…</div></div>';
+  overlay.classList.remove('hidden');
+
+  if(res.type==='pdf'){
+    // Google Drive /preview URLs embed directly without Google Docs Viewer wrapper
+    var embedUrl = res.url;
+    if(!embedUrl.includes('drive.google.com/file/d/') && !embedUrl.includes('/preview')){
+      // Fall back to Google Docs viewer for non-Drive PDFs
+      embedUrl = 'https://docs.google.com/gviewer?embedded=true&url='+encodeURIComponent(res.url);
+    }
+    var iframe=document.createElement('iframe');
+    iframe.src=embedUrl;
+    iframe.style.cssText='width:100%;height:100%;border:none;flex:1;';
+    iframe.allow='fullscreen';
+    iframe.onload=function(){ var l=body.querySelector('.preview-loading'); if(l) l.style.display='none'; };
+    body.innerHTML=''; body.appendChild(iframe);
+    // Timeout fallback
+    setTimeout(function(){
+      if(body.contains(iframe)&&body.querySelector('.preview-loading')){ showPdfFallback(body,res); }
+    },12000);
+
+  } else if(res.type==='video'){
+    var ytMatch=res.url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+    if(ytMatch){
+      closePreview();
+      window.open(res.url,'_blank','noopener');
+    } else {
+      var video=document.createElement('video');
+      video.src=res.url; video.controls=true; video.autoplay=true;
+      video.style.cssText='width:100%;height:100%;flex:1;object-fit:contain;';
+      video.oncanplay=function(){ var l=body.querySelector('.preview-loading'); if(l) l.style.display='none'; };
+      video.onerror=function(){ showVideoFallback(body,res); };
+      body.innerHTML=''; body.appendChild(video);
+    }
+  }
+}
+
+function showPdfFallback(body,res){
+  body.innerHTML=
+    '<div class="preview-fallback">'+
+      '<div class="preview-fallback-icon">📄</div>'+
+      '<div style="font-family:Syne,sans-serif;font-weight:700;font-size:1rem;color:var(--text);">'+res.name+'</div>'+
+      '<div style="font-size:0.82rem;color:var(--text2);max-width:280px;">Preview not available in this browser. Download the PDF to view it.</div>'+
+      '<a href="'+res.url+'" target="_blank" rel="noopener" download style="background:var(--accent3);color:#fff;border:none;border-radius:10px;padding:10px 24px;font-family:Syne,sans-serif;font-weight:700;font-size:0.92rem;text-decoration:none;display:inline-block;margin-top:8px;">⬇️ Download PDF</a>'+
+      '<a href="'+res.url+'" target="_blank" rel="noopener" style="color:var(--accent);font-size:0.8rem;margin-top:4px;text-decoration:underline;">Or open in browser tab</a>'+
+    '</div>';
+}
+
+function showVideoFallback(body,res){
+  body.innerHTML=
+    '<div class="preview-fallback">'+
+      '<div class="preview-fallback-icon">▶️</div>'+
+      '<div style="font-family:Syne,sans-serif;font-weight:700;font-size:1rem;color:var(--text);">'+res.name+'</div>'+
+      '<div style="font-size:0.82rem;color:var(--text2);">Cannot play this video format.</div>'+
+      '<a href="'+res.url+'" target="_blank" rel="noopener" style="background:var(--accent);color:#fff;border-radius:10px;padding:10px 24px;font-family:Syne,sans-serif;font-weight:700;font-size:0.92rem;text-decoration:none;display:inline-block;margin-top:8px;">🔗 Open Video Link</a>'+
+    '</div>';
+}
+
+function closePreview(){
+  var overlay=document.getElementById('preview-overlay');
+  overlay.classList.add('hidden');
+  // Stop any playing video
+  var video=overlay.querySelector('video');
+  if(video){ video.pause(); video.src=''; }
+  // Clear iframe to stop loading
+  var iframe=overlay.querySelector('iframe');
+  if(iframe){ iframe.src=''; }
+  document.getElementById('preview-body').innerHTML='';
+}
+
 function switchResTab(type){
   _resCurrentType=type;
   ['link','pdf','video'].forEach(function(t){ document.getElementById('restab-'+t).classList.toggle('active',t===type); });
-  var urlLabel=document.getElementById('res-url-label'), urlInput=document.getElementById('res-url-input');
-  if(type==='pdf'){ urlLabel.textContent='PDF URL (Google Drive, Dropbox, direct link)'; urlInput.placeholder='https://drive.google.com/file/d/...'; }
-  else if(type==='video'){ urlLabel.textContent='VIDEO URL (YouTube, Drive, etc.)'; urlInput.placeholder='https://youtube.com/watch?v=...'; }
-  else { urlLabel.textContent='URL / LINK'; urlInput.placeholder='https://...'; }
+  var urlWrap=document.getElementById('res-url-wrap');
+  var pdfWrap=document.getElementById('res-pdf-wrap');
+  if(type==='pdf'){
+    if(urlWrap) urlWrap.style.display='none';
+    if(pdfWrap) pdfWrap.style.display='block';
+    var inp=document.getElementById('res-pdf-drive-input'); if(inp) inp.value='';
+  } else {
+    if(urlWrap) urlWrap.style.display='block';
+    if(pdfWrap) pdfWrap.style.display='none';
+    var urlLabel=document.getElementById('res-url-label'), urlInput=document.getElementById('res-url-input');
+    if(type==='video'){ urlLabel.textContent='VIDEO URL (YouTube, Drive, etc.)'; urlInput.placeholder='https://youtube.com/watch?v=...'; }
+    else { urlLabel.textContent='URL / LINK'; urlInput.placeholder='https://...'; }
+  }
 }
+
 
 function adminAddResource(){
   var name=document.getElementById('res-name-input').value.trim();
-  var url=document.getElementById('res-url-input').value.trim();
   var errEl=document.getElementById('res-add-error');
-  if(!name){ errEl.textContent='Please enter a title.'; errEl.style.display='block'; return; }
-  if(!url||(!url.startsWith('http://')&&!url.startsWith('https://'))){ errEl.textContent='Please enter a valid URL.'; errEl.style.display='block'; return; }
+  var btn=document.getElementById('res-add-btn');
   errEl.style.display='none';
-  var res={id:Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,6),type:_resCurrentType,name:name,url:url,addedAt:new Date().toISOString()};
-  var existing=(topicResources[_resCurrentTopicId]||[]).slice(); existing.push(res);
-  initFirebase().then(function(db){ return db.collection('iraqimed_resources').doc(_resCurrentTopicId).set({topicId:_resCurrentTopicId,resources:existing}); })
-  .then(function(){
+
+  if(!name){ errEl.textContent='Please enter a title.'; errEl.style.display='block'; return; }
+
+  var url='', type=_resCurrentType;
+
+  if(type==='pdf'){
+    // Get Google Drive link and convert to preview/embed URL
+    var rawUrl=document.getElementById('res-pdf-drive-input').value.trim();
+    if(!rawUrl){ errEl.textContent='Please paste a Google Drive link.'; errEl.style.display='block'; return; }
+    url = convertDriveUrl(rawUrl);
+    if(!url){ errEl.textContent='Invalid link. Please paste a Google Drive sharing link.'; errEl.style.display='block'; return; }
+  } else {
+    url=document.getElementById('res-url-input').value.trim();
+    if(!url||(!url.startsWith('http://')&&!url.startsWith('https://'))){ errEl.textContent='Please enter a valid URL.'; errEl.style.display='block'; return; }
+  }
+
+  btn.disabled=true; btn.textContent='Saving…';
+  var res={
+    id:Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,6),
+    type:type, name:name, url:url,
+    addedAt:new Date().toISOString()
+  };
+  var existing=(topicResources[_resCurrentTopicId]||[]).slice();
+  existing.push(res);
+  initFirebase().then(function(db){
+    return db.collection('iraqimed_resources').doc(_resCurrentTopicId).set({topicId:_resCurrentTopicId,resources:existing});
+  }).then(function(){
     topicResources[_resCurrentTopicId]=existing;
-    document.getElementById('res-name-input').value=''; document.getElementById('res-url-input').value='';
+    document.getElementById('res-name-input').value='';
+    document.getElementById('res-url-input').value='';
+    var driveInp=document.getElementById('res-pdf-drive-input'); if(driveInp) driveInp.value='';
+    btn.disabled=false; btn.textContent='➕ Add Resource';
     renderResItems(_resCurrentTopicId); renderTopics();
     showToast('✅ Resource added: '+name,'success');
-  }).catch(function(err){ errEl.textContent='Error: '+err.message; errEl.style.display='block'; });
+  }).catch(function(err){
+    btn.disabled=false; btn.textContent='➕ Add Resource';
+    errEl.textContent='Error: '+err.message; errEl.style.display='block';
+  });
+}
+
+// Convert any Google Drive sharing URL to a direct preview URL
+function convertDriveUrl(url){
+  // Already a preview/embed link
+  if(url.includes('drive.google.com/file/d/')){
+    var match=url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if(match){
+      // Return the preview URL (works in iframe and Google Docs viewer)
+      return 'https://drive.google.com/file/d/'+match[1]+'/preview';
+    }
+  }
+  // Open or export link
+  if(url.includes('drive.google.com/open?id=')){
+    var id=url.split('id=')[1];
+    if(id) return 'https://drive.google.com/file/d/'+id+'/preview';
+  }
+  // If it's any other https link, accept as-is
+  if(url.startsWith('https://')) return url;
+  return null;
 }
 
 function adminDeleteResource(topicId,resourceId){
